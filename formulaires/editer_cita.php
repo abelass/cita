@@ -107,9 +107,28 @@ function formulaires_editer_cita_charger_dist($id_cita = 'new', $id_auteur = 0, 
  *     Tableau des erreurs
  */
 function formulaires_editer_cita_verifier_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
-	$erreurs = array();
+	$erreurs = [];
 
-	$erreurs = formulaires_editer_objet_verifier('cita', $id_cita, array('date_debut', 'date_fin', 'id_auteur'));
+	$erreurs = formulaires_editer_objet_verifier('cita', $id_cita, array('date_debut', 'date_fin'));
+	
+	$verifier = charger_fonction('verifier', 'inc');
+
+	foreach (['date_debut', 'date_fin'] AS $champ) {
+		list($date, $heure) =  explode(' ',_request($champ));
+		print $heure;
+
+		$normaliser = null;
+		if ($erreur = $verifier(['date' => $date, 'heure' => $heure], 'date', ['normaliser'=>'datetime'], $normaliser)) {
+			$erreurs[$champ] = $erreur;
+		// si une valeur de normalisation a ete transmis, la prendre.
+		} elseif (!is_null($normaliser)) {
+			set_request($champ, $normaliser);
+		// si pas de normalisation ET pas de date soumise, il ne faut pas tenter d'enregistrer ''
+		} else {
+			set_request($champ, null);
+		}
+	}
+
 
 	return $erreurs;
 }

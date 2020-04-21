@@ -44,7 +44,8 @@
 	-->
 
 	<necessite nom="saisies" compatibilite="[3.36.2;]" /> 
-	<necessite nom="dates_outils" compatibilite="[1.1.0;]" /> 
+	<necessite nom="dates_outils" compatibilite="[1.1.0;]" />
+	<necessite nom="verifier" compatibilite="[1.9.6;]" /> 
 
 
 	<pipeline nom="autoriser" inclure="cita_autorisations.php" /> 
