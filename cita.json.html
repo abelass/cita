@@ -13,11 +13,9 @@
 	})]
 	#SET{tableau,#ARRAY{id,#ID_EVENEMENT,
 		title,(#TITRE|html2unicode|unicode2charset),
-		allDay,(#HORAIRE|=={non}|?{#EVAL{true},#EVAL{false}}),
+		allDay, true,
 		start,#DATE_DEBUT,
 		end,#GET{date_fin},
-		url,#URL_ARTICLE,
-		description,(#DESCRIPTIF|html2unicode|unicode2charset),
 	}}
 
 [(#ENV{couleur}|=={rubrique}|oui)

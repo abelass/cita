@@ -114,9 +114,7 @@ function formulaires_editer_cita_verifier_dist($id_cita = 'new', $id_auteur = 0,
 	$verifier = charger_fonction('verifier', 'inc');
 
 	foreach (['date_debut', 'date_fin'] AS $champ) {
-		list($date, $heure) =  explode(' ',_request($champ));
-		print $heure;
-
+		list($date, $heure) =  explode(' ', _request($champ));
 		$normaliser = null;
 		if ($erreur = $verifier(['date' => $date, 'heure' => $heure], 'date', ['normaliser'=>'datetime'], $normaliser)) {
 			$erreurs[$champ] = $erreur;

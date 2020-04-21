@@ -12,6 +12,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'ajouter_lien_cita' => 'Ajouter ce rendez-vous',
 
 	// C
+	'cfg_titre_calendrier' => 'Calendrier',
+	'cfg_titre_formulaire' => 'Formulaire',	
 	'champ_commetaire_label' => 'Commetaire',
 	'champ_date_debut_label' => 'Date début',
 	'champ_date_fin_label' => 'Date fin',
@@ -27,6 +29,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_aucun_cita' => 'Aucun rendez-vous',
 	'info_citas_auteur' => 'Les rendez-vous de cet auteur',
 	'info_nb_citas' => '@nb@ rendez-vous',
+
+	// L
+	'label_jour1' => 'Premier jour de la semaine : ',
+	'label_days_week' => 'Les jours de la semaine : ',
+	'label_end_time' => 'Fin de la journée : ',		
+	'label_start_time' => 'Début de la journée : ',		
+	'label_statut_defaut' => 'Statut par défaut du rendez vous : ',	
 
 	// R
 	'retirer_lien_cita' => 'Retirer ce rendez-vous',
