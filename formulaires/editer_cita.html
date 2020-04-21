@@ -1,0 +1,40 @@
+<div class='formulaire_spip formulaire_editer formulaire_#FORM formulaire_#FORM-#ENV{id_cita,nouveau}'>
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable})
+	<form method="post" action="#ENV{action}"><div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<input type="hidden" name="id_cita" value="#ENV{id_cita}" />
+		<div class="editer-groupe">
+
+			[(#SAISIE{input, date_debut, obligatoire=oui,
+				label=<:cita:champ_date_debut_label:>})]
+
+			[(#SAISIE{input, date_fin, obligatoire=oui,
+				label=<:cita:champ_date_fin_label:>})]
+
+			[(#SAISIE{auteurs, id_auteur,
+				label=<:cita:champ_id_auteur_label:>})]
+
+			[(#SAISIE{input, nom,
+				label=<:cita:champ_nom_label:>})]
+
+			[(#SAISIE{auteurs, id_auteur, obligatoire=oui,
+				label=<:auteur:titre_auteur:>})]
+
+
+			[(#SAISIE{input, email,
+				label=<:cita:champ_email_label:>})]
+
+			[(#SAISIE{textarea, commetaire,
+				label=<:cita:champ_commetaire_label:>,
+				conteneur_class=pleine_largeur, class=inserer_barre_edition, rows=4})]
+
+		</div>
+		[(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+		<!--extra-->
+		<p class="boutons"><input type="submit" class="submit" value="<:bouton_enregistrer:>" /></p>
+	</div></form>
+	]
+</div>

@@ -1,0 +1,32 @@
+<BOUCLE_cita(CITAS){id_cita}{statut?}>
+[<div class="champ contenu_date_debut[ (#DATE_DEBUT*|strlen|?{'',vide})]">
+	<label><:cita:champ_date_debut_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{date_debut} date_debut">(#DATE_DEBUT)</span>
+</div>]
+
+[<div class="champ contenu_date_fin[ (#DATE_FIN*|strlen|?{'',vide})]">
+	<label><:cita:champ_date_fin_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{date_fin} date_fin">(#DATE_FIN)</span>
+</div>]
+
+[<div class="champ contenu_id_auteur[ (#ID_AUTEUR*|strlen|?{'',vide})]">
+	<label><:cita:champ_id_auteur_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{id_auteur} id_auteur">(#ID_AUTEUR)</span>
+</div>]
+
+[<div class="champ contenu_nom[ (#NOM*|strlen|?{'',vide})]">
+	<label><:cita:champ_nom_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{nom} nom">(#NOM)</span>
+</div>]
+
+[<div class="champ contenu_email[ (#EMAIL*|strlen|?{'',vide})]">
+	<label><:cita:champ_email_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{email} email">(#EMAIL)</span>
+</div>]
+
+[<div class="champ contenu_commetaire[ (#COMMETAIRE*|strlen|?{'',vide})]">
+	<label><:cita:champ_commetaire_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{commetaire} commetaire">(#COMMETAIRE)</span>
+</div>]
+
+</BOUCLE_cita>

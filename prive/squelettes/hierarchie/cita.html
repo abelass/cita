@@ -1,0 +1,10 @@
+<!-- hierarchie -->
+<a href="#URL_ECRIRE{citas}"><:cita:titre_citas:></a>
+<BOUCLE_hierarchie(CITAS){id_cita}{statut?}>
+&gt; [(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR}|lien_ou_expose{#INFO_TITRE{auteurs,#ID_AUTEUR},''})]
+&gt; <strong class="on">#NOM</strong>
+</BOUCLE_hierarchie>
+[(#ENV{id_auteur}|oui)
+	&gt; [(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR}|lien_ou_expose{#INFO_TITRE{auteurs,#ID_AUTEUR},''})]
+]&gt; <strong class="on"><:ecrire:info_sans_titre:></strong>
+<//B_hierarchie>

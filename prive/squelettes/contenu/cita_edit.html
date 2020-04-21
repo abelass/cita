@@ -1,0 +1,36 @@
+[(#ID_CITA|oui)
+	[(#AUTORISER{modifier,cita,#ID_CITA}|sinon_interdire_acces)]
+	[(#SET{id_parent,#INFO_ID_AUTEUR{cita,#ID_CITA}})]
+]
+
+[(#ID_CITA|non)
+	#SET{id_parent,#ENV{id_auteur,#ENV{id_parent}}}
+	[(#GET{id_parent}|non|ou{[(#AUTORISER{creercitadans, auteur, #GET{id_parent}})]}|sinon_interdire_acces)]
+]
+
+#SET{redirect,#ENV{redirect}|sinon{#ID_CITA|?{#ID_CITA|generer_url_entite{cita},#GET{id_parent}|?{#GET{id_parent}|generer_url_entite{auteur},#URL_ECRIRE{auteurs}}}}}
+
+
+
+<div class="cadre-formulaire-editer">
+<div class="entete-formulaire">
+	[(#ID_CITA|oui)
+	[(#GET{redirect}|icone_verticale{<:icone_retour:>,cita,'',left retour[(#ENV{retourajax,''}|oui)ajax preload]})]
+	]
+	[
+		[(#ID_CITA|?{<:cita:icone_modifier_cita:>,<:cita:icone_creer_cita:>})]
+		<h1>(#ENV{titre,#INFO_NOM{cita,#ID_CITA}|sinon{<:info_sans_titre:>}})</h1>
+	]
+</div>
+
+#SET{redirect,#ENV{redirect,#ID_CITA|generer_url_entite{cita}}}
+[(#ENV{retourajax,''}|oui)
+	#SET{redirect,'javascript:if (window.jQuery) jQuery(".entete-formulaire .retour a").followLink();'}
+	<div class="ajax">
+]
+		[(#FORMULAIRE_EDITER_CITA{#ENV{id_cita,oui}, #GET{id_parent}, #GET{redirect}, #ENV{associer_objet}})]
+[(#ENV{retourajax,''}|oui)
+	</div>
+	<script type="text/javascript">/*<!\[CDATA\[*/reloadExecPage('#ENV{exec}');/*\]\]>*/</script>
+]
+</div>
