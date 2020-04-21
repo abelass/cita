@@ -1,7 +1,7 @@
 <paquet
 	prefix="cita"
 	categorie="communication"
-	version="0.0.1"
+	version="0.0.2"
 	etat="dev"
 	compatibilite="[3.2.7;3.2.*]"
 	logo="prive/themes/spip/images/cita-64.png"
@@ -18,6 +18,9 @@
 
 	<!-- cette balise peut être présente plusieurs fois s'il y a plusieurs auteurs --> 
 	<auteur lien='https://web-simple.eu'>Rainer Müller</auteur>
+	<credit lien='https://thenounproject.com/'>
+		Logo 'appointment' by visual language from the Noun Project
+	</credit>
 
 	<licence>GNU/GPL v3</licence>
 
