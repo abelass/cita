@@ -1,0 +1,10 @@
+Only in ../plugins/fabrique_auto/cita/: action
+diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/paquet.xml ../plugins/fabrique_auto/cita/paquet.xml
+12c12
+< 		Paquet généré le 2020-04-21 10:06:39
+---
+> 		Paquet généré le 2020-04-21 14:57:07
+Only in ../plugins/fabrique_auto/cita/prive/objets: infos
+Only in ../plugins/fabrique_auto/cita/prive/squelettes/contenu: citas.html
+Only in ../plugins/fabrique_auto/cita/: saisies
+Only in ../plugins/fabrique_auto/cita/: saisies-vues

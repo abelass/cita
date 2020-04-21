@@ -2,7 +2,7 @@
 
 /**
  *  Fichier généré par la Fabrique de plugin v6
- *   le 2020-04-21 10:06:39
+ *   le 2020-04-21 14:57:07
  *
  *  Ce fichier de sauvegarde peut servir à recréer
  *  votre plugin avec le plugin «Fabrique» qui a servi à le créer.
@@ -231,6 +231,23 @@ $data = array (
       'roles' => '',
       'auteurs_liens' => '',
       'vue_auteurs_liens' => '',
+      'fichiers' => 
+      array (
+        'echafaudages' => 
+        array (
+          0 => 'prive/squelettes/contenu/objets.html',
+          1 => 'prive/objets/infos/objet.html',
+          2 => 'prive/squelettes/contenu/objet.html',
+        ),
+        'explicites' => 
+        array (
+          0 => 'action/supprimer_objet.php',
+        ),
+      ),
+      'saisies' => 
+      array (
+        0 => 'objets',
+      ),
       'autorisations' => 
       array (
         'objet_creer' => '',

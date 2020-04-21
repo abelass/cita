@@ -1,0 +1,30 @@
+<BOUCLE_cita(CITAS){id_cita=#ENV{id}}{statut?}>
+<div class="infos">
+[(#SET{texte_objet,<:cita:titre_cita:>})]
+<div class="numero"><:titre_cadre_numero_objet{objet=#GET{texte_objet}}:><p>#ID_CITA</p></div>
+
+[(#FORMULAIRE_INSTITUER_OBJET{citas,#ID_CITA})]
+
+<div class='nb_elements'><!--nb_elements--></div>
+
+[(#REM)
+
+	Bouton voir en ligne
+
+]
+<BOUCLE_publie(CITAS){id_cita}>
+	[(#VAL{redirect}
+		|generer_url_action{type=citas&id=#ID_CITA}
+		|parametre_url{var_mode,calcul}
+		|icone_horizontale{<:icone_voir_en_ligne:>,racine})]
+</BOUCLE_publie>
+	[(#AUTORISER{previsualiser,citas,#ID_CITA,'',#ARRAY{statut,#STATUT}})
+		[(#VAL{redirect}
+			|generer_url_action{type=citas&id=#ID_CITA}
+			|parametre_url{var_mode,preview}
+			|icone_horizontale{<:previsualiser:>,preview})]
+	]
+<//B_publie>
+
+</div>
+</BOUCLE_cita>

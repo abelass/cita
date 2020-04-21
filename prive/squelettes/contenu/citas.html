@@ -1,0 +1,8 @@
+#FORMULAIRE_RECHERCHE_ECRIRE{#SELF,ajax}
+<div class="nettoyeur"></div>
+
+<INCLURE{fond=prive/objets/liste/citas, env, ajax, sinon=<:cita:info_aucun_cita:>}>
+
+[(#AUTORISER{creer,cita})
+	[(#URL_ECRIRE{cita_edit,new=oui}|icone_verticale{<:cita:icone_creer_cita:>,cita,new,right})]
+]

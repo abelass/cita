@@ -13,11 +13,11 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+// Les filtres de dates_outils.
+include_spip('filtres/inc_agenda_filtres');
+include_spip('filtres/agenda_fonctions');
 
-/*
- * Un fichier de fonctions permet de définir des éléments
- * systématiquement chargés lors du calcul des squelettes.
- *
- * Il peut par exemple définir des filtres, critères, balises, …
- * 
- */
+// Les critères de dates_outils.
+include_spip('criteres/inc_agenda_filtres');
+
+

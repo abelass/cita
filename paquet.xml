@@ -3,7 +3,7 @@
 	categorie="communication"
 	version="0.0.2"
 	etat="dev"
-	compatibilite="[3.2.7;3.2.*]"
+	compatibilite="[3.2.7;3.3.*]"
 	logo="prive/themes/spip/images/cita-64.png"
 	documentation=""
 	schema="0.0.1" 
@@ -43,7 +43,8 @@
 		<onglet nom="cita" titre="cita:cita_titre" parent="configuration" icone="images/cita-24.png" />
 	-->
 
-	<necessite nom="saisies" compatibilite="[3.23.2;]" /> 
+	<necessite nom="saisies" compatibilite="[3.36.2;]" /> 
+	<necessite nom="dates_outils" compatibilite="[1.1.0;]" /> 
 
 
 	<pipeline nom="autoriser" inclure="cita_autorisations.php" /> 
