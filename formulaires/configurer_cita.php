@@ -26,8 +26,8 @@ function formulaires_configurer_cita_saisies_dist() {
 		[
 			'saisie' => 'fieldset',
 			'options' => [
-				'nom' => 'fieldset_parametres',
-				'label' => _T('cita:cfg_titre_formulaire')
+				'nom' => 'fieldset_formulaire',
+				'label' => _T('cita:fieldset_label_formulaire')
 			],
 			'saisies' => [
 				[
@@ -38,15 +38,55 @@ function formulaires_configurer_cita_saisies_dist() {
 						'cacher_option_intro' => 'on',
 						'label' => _T('cita:label_statut_defaut'),
 						'defaut' => $config['statut_defaut']
-					]
+					],
 				],
-			]
+				[
+					'saisie' => 'fieldset',
+					'options' => [
+						'nom' => 'fieldset_dates',
+						'label' => _T('cita:fieldset_label_dates')
+					],
+					'saisies' => [
+						[
+							'saisie' => 'selection',
+							'options' => [
+								'nom' => 'dates_periode_definition',
+								'label' => _T('cita:label_dates_periode_definition'),
+								'cacher_option_intro' => 'on',
+								'data' => [
+									'libre' => _T('cita:titre_dates_periode_definition_libre'),
+									'predefinis' => _T('cita:titre_dates_periode_definition_predefinis'),
+								],
+								'defaut' => $config['dates_periode_definition']
+							]
+						],
+						[
+							'saisie' => 'input',
+							'options' => [
+								'nom' => 'dates_periode',
+								'label' => _T('cita:label_dates_periode'),
+								'defaut' => $config['dates_periode'],
+								'afficher_si' => '@dates_periode_definition@ == "predefinis"',
+							]
+						],
+						[
+							'saisie' => 'oui_non',
+							'options' => [
+								'nom' => 'dates_editables',
+								'label' => _T('cita:label_dates_editables'),
+								'defaut' => $config['dates_editables'],
+								'afficher_si' => '@dates_periode_definition@ == "predefinis"',
+							]
+						],
+					],
+				],
+			],
 		],
 		[
 			'saisie' => 'fieldset',
 			'options' => [
-				'nom' => 'fieldset_parametres',
-				'label' => _T('cita:cfg_titre_calendrier')
+				'nom' => 'fieldset_calendrier',
+				'label' => _T('cita:fieldset_label_calendrier')
 			],
 			'saisies' => [
 				[

@@ -96,14 +96,27 @@ function formulaires_editer_cita_charger_dist(
 	$hidden = '') {
 	include_spip('inc/config');
 	$config = lire_config('cita');
+
+	$espace_prive = test_espace_prive();
+
 	
 	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, $id_auteur, $lier_trad, $retour, $config_fonc, $row, $hidden);
 
 	if (!intval($id_cita)) {
 		$valeurs['statut'] = isset($config['statut_defaut']) ? $config['statut_defaut'] : 'prepa';
-		$valeurs['_hidden'] .= '<input type="hidden" name="statut" value="'.$valeurs['statut'].'" />'; 
+		$valeurs['_hidden'] .= '<input type="hidden" name="statut" value="' . $valeurs['statut'] . '" />'; 
 		$valeurs['date_debut'] = _request('date_debut') ? _request('date_debut') : '0000-00-00 00:00:00';
-		$valeurs['date_fin'] = _request('date_debut') ? _request('date_debut') : '0000-00-00 00:00:00';
+		$valeurs['date_fin'] = _request('date_fin') ? _request('date_fin') : '0000-00-00 00:00:00';
+	}
+
+	$valeurs['dates_editables'] = true;
+	if (!$espace_prive) {
+		if (isset($config['dates_editables']) AND !$config['dates_editables']) {
+			$valeurs['dates_editables'] = false;
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_debut" value="' . $valeurs['date_debut'] . '" />'; 
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_fin" value="' . $valeurs['date_fin'] . '" />'; 
+		}
+		
 	}
 	
 	if (!$valeurs['id_auteur']) {

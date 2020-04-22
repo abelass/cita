@@ -12,8 +12,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'ajouter_lien_cita' => 'Ajouter ce rendez-vous',
 
 	// C
-	'cfg_titre_calendrier' => 'Calendrier',
-	'cfg_titre_formulaire' => 'Formulaire',	
 	'champ_commetaire_label' => 'Commetaire',
 	'champ_date_debut_label' => 'Date début',
 	'champ_date_fin_label' => 'Date fin',
@@ -21,6 +19,11 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_id_auteur_label' => 'Auteur',
 	'champ_nom_label' => 'Nom',
 	'confirmer_supprimer_cita' => 'Confirmez-vous la suppression de cet rendez-vous ?',
+
+	// F
+	'fieldset_label_calendrier' => 'Calendrier',
+	'fieldset_label_dates' => 'Gestion des dates',	
+	'fieldset_label_formulaire' => 'Formulaire',	
 
 	// I
 	'icone_creer_cita' => 'Créer un rendez-vous',
@@ -32,6 +35,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// L
 	'label_jour1' => 'Premier jour de la semaine : ',
+	'label_dates_editables' => 'Permettre d\'éditer les dates depuis le formulaire publique : ',	
+	'label_dates_periode' => 'Durée en minutes: ',		
+	'label_dates_periode_definition' => 'Durée du rendez-vous : ',	
 	'label_days_week' => 'Les jours de la semaine : ',
 	'label_end_time' => 'Fin de la journée : ',		
 	'label_start_time' => 'Début de la journée : ',		
@@ -49,10 +55,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'texte_changer_statut_cita' => 'Ce rendez-vous est :',
 	'texte_creer_associer_cita' => 'Créer et associer un rendez-vous',
 	'texte_definir_comme_traduction_cita' => 'Ce rendez-vous est une traduction du rendez-vous numéro :',
+	'titre_dates_periode_definition_libre' => 'Librement définis',
+	'titre_dates_periode_definition_predefinis' => 'Prédéfinis',	
 	'titre_cita' => 'Rendez-vous',
 	'titre_citas' => 'Rendez-vous',
 	'titre_citas_rubrique' => 'Rendez-vous de la rubrique',
 	'titre_langue_cita' => 'Langue de ce rendez-vous',
 	'titre_logo_cita' => 'Logo de ce rendez-vous',
 	'titre_objets_lies_cita' => 'Liés à ce rendez-vous',
+	'titre_page_configurer_cita' => 'Paramètres pour cita',	
 );

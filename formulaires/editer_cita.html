@@ -7,8 +7,9 @@
 		#ACTION_FORMULAIRE{#ENV{action}}
 		<input type="hidden" name="id_cita" value="#ENV{id_cita}" />
 		<div class="editer-groupe">
-
-			[(#SAISIE{date, 
+		[(#ENV{dates_editables}|oui)
+			[(#SAISIE{
+				date, 
 				date_debut, 
 				obligatoire=oui,
 				horaire=oui,
@@ -20,6 +21,7 @@
 				horaire=oui,
 				obligatoire=oui,
 				label=<:cita:champ_date_fin_label:>})]
+			]
 
 			[(#SAISIE{auteurs, id_auteur,
 				label=<:cita:champ_id_auteur_label:>})]
