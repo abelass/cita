@@ -58,4 +58,7 @@
 	<pipeline nom="optimiser_base_disparus" inclure="cita_pipelines.php" /> 
 
 	<menu nom="citas" titre="cita:titre_citas" parent="menu_edition" icone="images/cita-16.png" action="citas" /> 
+
+	<chemin path="squelettes" />
+	<chemin path="" />
 </paquet>
