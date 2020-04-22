@@ -2,7 +2,7 @@
 <a href="#URL_ECRIRE{citas}"><:cita:titre_citas:></a>
 <BOUCLE_hierarchie(CITAS){id_cita}{statut?}>
 &gt; [(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR}|lien_ou_expose{#INFO_TITRE{auteurs,#ID_AUTEUR},''})]
-&gt; <strong class="on">#NOM</strong>
+&gt; <strong class="on">#DATE_DEBUT</strong>
 </BOUCLE_hierarchie>
 [(#ENV{id_auteur}|oui)
 	&gt; [(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR}|lien_ou_expose{#INFO_TITRE{auteurs,#ID_AUTEUR},''})]

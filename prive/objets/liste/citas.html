@@ -1,5 +1,5 @@
 [(#SET{defaut_tri,#ARRAY{
-	nom,1,
+	date_debut,1,
 	date,-1,
 	id_cita,1,
 	points,-1
@@ -12,17 +12,17 @@
 		<tr class="first_row">
 			<th class="picto" scope="col"></th>
 			<th class="statut" scope="col">[(#TRI{statut,<span title="<:lien_trier_statut|attribut_html:>">#</span>,ajax})]</th> 
-			<th class="nom" scope="col">[(#TRI{nom,<:cita:champ_nom_label:>,ajax})]</th>
+			<th class="date_debut" scope="col">[(#TRI{date_debut,<:cita:champ_date_debut_label:>,ajax})]</th>
 			<th class="date" scope="col">[(#TRI{date,<:date:>,ajax})]</th> 
 			<th class="id" scope="col">[(#TRI{id_cita,<:info_numero_abbreviation:>,ajax})]</th>
 		</tr>
 	</thead>
 	<tbody>
-	<BOUCLE_liste_citas(CITAS){id_auteur?}{id_auteur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num nom},#GET{defaut_tri}}{par nom}{pagination #ENV{nb,10}}>
+	<BOUCLE_liste_citas(CITAS){id_auteur?}{id_auteur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num date_debut},#GET{defaut_tri}}{par date_debut}{pagination #ENV{nb,10}}>
 		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
 			<td class="picto">[(#CHEMIN_IMAGE{cita-16.png}|balise_img)]</td>
 			<td class="statut">[(#STATUT|puce_statut{cita,#ID_CITA})]</td> 
-			<td class="nom principale">[(#LOGO_CITA|image_reduire{20,26})]<a href="[(#ID_CITA|generer_url_entite{cita})]" title="<:info_numero_abbreviation|attribut_html:> #ID_CITA">[(#RANG). ]#NOM</a></td>
+			<td class="date_debut principale">[(#LOGO_CITA|image_reduire{20,26})]<a href="[(#ID_CITA|generer_url_entite{cita})]" title="<:info_numero_abbreviation|attribut_html:> #ID_CITA">[(#RANG). ]#DATE_DEBUT</a></td>
 			<td class="date secondaire">[(#DATE|affdate_jourcourt)]</td> 
 			<td class="id">[(#AUTORISER{modifier,cita,#ID_CITA}|?{
 				<a href="[(#URL_ECRIRE{cita_edit,id_cita=#ID_CITA})]">#ID_CITA</a>,

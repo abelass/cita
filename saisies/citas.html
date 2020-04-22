@@ -4,10 +4,10 @@
 <select name="#ENV{nom}[(#ENV{multiple}|?{\[\]})]" id="champ_[(#ENV{nom}|saisie_nom2classe)]"[ class="(#ENV{class})"][(#ENV{multiple}|oui) multiple="multiple" size="#ENV{size,10}"][ disabled="(#ENV{disable})"]>
 	[(#ENV{cacher_option_intro}|ou{#ENV{multiple}}|non)
 		<option value="">[(#ENV{option_intro})]</option>]
-	<BOUCLE_citas(CITAS){id_cita?}{id_auteur?}{id_auteur?}{statut?}{recherche?}{tout}{par num nom, nom}>
+	<BOUCLE_citas(CITAS){id_cita?}{id_auteur?}{id_auteur?}{statut?}{recherche?}{tout}{par num date_debut, date_debut}>
 		[(#ENV{multiple}|oui)
-		<option value="#ID_CITA"[(#ID_CITA|in_array{#ENV{valeur_forcee,#GET{valeur,#ENV{defaut,#ARRAY}}}}|oui) selected="selected"]>#NOM</option>]
+		<option value="#ID_CITA"[(#ID_CITA|in_array{#ENV{valeur_forcee,#GET{valeur,#ENV{defaut,#ARRAY}}}}|oui) selected="selected"]>#DATE_DEBUT</option>]
 		[(#ENV{multiple}|non)
-		<option value="#ID_CITA"[(#ID_CITA|=={#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}}|oui) selected="selected"]>#NOM</option>]
+		<option value="#ID_CITA"[(#ID_CITA|=={#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}}|oui) selected="selected"]>#DATE_DEBUT</option>]
 	</BOUCLE_citas>
 </select>

@@ -3,8 +3,8 @@
 	<B_citas_selectionnes>
 	<ul>
 	<BOUCLE_citas_selectionnes(CITAS){id_cita IN #GET*{valeur}}
-		{par num nom, nom}{statut?}{tout}>
-		<li class="choix">#NOM (#ID_CITA)</li>
+		{par num date_debut, date_debut}{statut?}{tout}>
+		<li class="choix">#DATE_DEBUT (#ID_CITA)</li>
 	</BOUCLE_citas_selectionnes>
 	</ul>
 	</B_citas_selectionnes>
@@ -12,8 +12,8 @@
 	<//B_citas_selectionnes>
 </BOUCLE_test_multiple>
 	<BOUCLE_cita_selectionne(CITAS){id_cita=#ENV{valeur}}
-		{par num nom, nom}{statut?}{tout}>
-	  	<p>#NOM (#ID_CITA)</p>
+		{par num date_debut, date_debut}{statut?}{tout}>
+	  	<p>#DATE_DEBUT (#ID_CITA)</p>
 	</BOUCLE_cita_selectionne>
    	[(#ENV*{sans_reponse}|propre)]
 	<//B_cita_selectionne>

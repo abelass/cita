@@ -1,5 +1,5 @@
 [(#SET{defaut_tri,#ARRAY{
-	multi nom,1,
+	multi date_debut,1,
 	date,-1,
 	id_cita,1
 }})
@@ -10,7 +10,7 @@
 [(#REM) En cas de pagination indirecte @32, il faut refaire le set car la boucle
 a mis a jour la valeur avec la page reelle]
 #SET{debut,#ENV{debutcitl,#EVAL{_request("debutcitl");}}}
-#SET{afficher_lettres,#TRI|=={'multi nom'}|oui}
+#SET{afficher_lettres,#TRI|=={'multi date_debut'}|oui}
 #ANCRE_PAGINATION
 <div class="liste-objets liste-objets-lies citas">
 <table class="spip liste">
@@ -18,10 +18,10 @@ a mis a jour la valeur avec la page reelle]
 	<thead>
 		#SET{p,''}
 		<BOUCLE_lettre(CITAS){tout}{id_cita IN #GET{selection}}{where?}{statut?}
-			{tri #ENV{par,multi nom},#GET{defaut_tri}}{id_cita==#GET{afficher_lettres}|?{'.*','A'}}>[
-		(#NOM**|extraire_multi|initiale|unique|oui)
+			{tri #ENV{par,multi date_debut},#GET{defaut_tri}}{id_cita==#GET{afficher_lettres}|?{'.*','A'}}>[
+		(#DATE_DEBUT**|extraire_multi|initiale|unique|oui)
 		[(#SET{p,#GET{p}|concat{
-		#SELF|parametre_url{debutcitl,@#ID_CITA}|ancre_url{paginationcitl}|afficher_initiale{#NOM**|extraire_multi|initiale{},#COMPTEUR_BOUCLE,#GET{debut},#ENV{nb,10}}
+		#SELF|parametre_url{debutcitl,@#ID_CITA}|ancre_url{paginationcitl}|afficher_initiale{#DATE_DEBUT**|extraire_multi|initiale{},#COMPTEUR_BOUCLE,#GET{debut},#ENV{nb,10}}
 		}})]
 		]#SAUTER{#ENV{nb,10}|moins{#COMPTEUR_BOUCLE|=={1}|?{2,1}}}</BOUCLE_lettre>[
 		(#SET{p,
@@ -33,16 +33,16 @@ a mis a jour la valeur avec la page reelle]
 
 		<tr class="first_row">
 			<th class="statut" scope="col">[(#TRI{statut,<span title="<:lien_trier_statut|attribut_html:>">#</span>,ajax})]</th> 
-			<th class="nom" scope="col">[(#TRI{multi nom,<:cita:champ_nom_label:>,ajax})]</th>
+			<th class="date_debut" scope="col">[(#TRI{multi date_debut,<:cita:champ_date_debut_label:>,ajax})]</th>
 			<th class="action" scope="col"></th>
 		</tr>
 	</thead>
 	<tbody>
 	<BOUCLE_liste_citas(CITAS){id_cita IN #GET{selection}}{statut?}
-		{tri #ENV{par,multi nom},#GET{defaut_tri}}{pagination #ENV{nb,10} citl}>
-		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})][ (#EXPOSE|unique)][ (#NOM**|extraire_multi|initiale|=={#ENV{i}}|?{on}|unique)][(#ID_CITA|=={#ENV{id_lien_ajoute}}|oui)append]">
+		{tri #ENV{par,multi date_debut},#GET{defaut_tri}}{pagination #ENV{nb,10} citl}>
+		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})][ (#EXPOSE|unique)][ (#DATE_DEBUT**|extraire_multi|initiale|=={#ENV{i}}|?{on}|unique)][(#ID_CITA|=={#ENV{id_lien_ajoute}}|oui)append]">
 			<td class="statut">[(#STATUT|puce_statut{cita})]</td> 
-			<td class="nom">[(#LOGO_CITA|image_reduire{20,20})]<a href="[(#ID_CITA|generer_url_entite{cita})]">#NOM</a></td>
+			<td class="date_debut">[(#LOGO_CITA|image_reduire{20,20})]<a href="[(#ID_CITA|generer_url_entite{cita})]">#DATE_DEBUT</a></td>
 
 			<td class="action">
 				[(#ENV{editable}|oui)

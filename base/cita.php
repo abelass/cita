@@ -63,7 +63,7 @@ function cita_declarer_tables_objets_sql($tables) {
 			'KEY id_auteur'      => 'id_auteur',
 			'KEY statut'         => 'statut',
 		),
-		'titre' => 'nom AS titre, "" AS lang',
+		'titre' => 'date_debut AS titre, "" AS lang',
 		'date' => 'date',
 		'champs_editables'  => array('date_debut', 'date_fin', 'id_auteur', 'nom', 'email', 'commetaire', 'id_auteur'),
 		'champs_versionnes' => array('date_debut', 'date_fin', 'id_auteur', 'nom', 'email', 'commetaire', 'id_auteur'),
