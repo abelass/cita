@@ -1,17 +1,28 @@
+#SET{firstDay,#ENV{firstDay,#CONFIG{cita/jour1,1}}}
+#SET{dow,#ENV{dow,#CONFIG{cita/days_week,#LISTE{1, 2, 3, 4}}}}
+#SET{start,#ENV{start,#CONFIG{cita/start_time,10:00}}}
+#SET{end,#ENV{end,#CONFIG{cita/end_time,18:00}}}
+#SET{businessHours,
+	#ENV{businessHours,
+		#ARRAY{
+			dow,#GET{dow},
+			start,#GET{start},
+			end,#GET{end}
+		}
+	}
+}
 <link rel='stylesheet' type='text/css' href='#CHEMIN{lib/fullcalendar/fullcalendar.min.css}' />
 <script type='text/javascript' src='#CHEMIN{lib/moment/moment-with-locales.min.js}'></script>
 <script type='text/javascript' src='#CHEMIN{lib/fullcalendar/fullcalendar.min.js}'></script>
 <script type='text/javascript' src='#CHEMIN{lib/fullcalendar/locale-all.js}'></script>
 <script type="text/javascript">/*<![CDATA[*/
 jQuery(function($) {
-
-
 	$('#agenda').fullCalendar({
 			locale: '[(#LANG|strtolower)]',
 			editable: false,
 			navLinks: true,
 			eventLimit: true,
-			firstDay: #CONFIG{cita/jour1,1},
+			firstDay: #GET{firstDay},
 			events: "[(#URL_PAGE{cita.json}|parametre_url{couleur,#ENV{couleur},&})]",
 			header: {
 				left: [(#LANG_DIR|=={ltr}|?{"'prevYear,prev,next,nextYear today'","'listMonth,month,agendaWeek,agendaDay'"})],
@@ -28,15 +39,8 @@ jQuery(function($) {
 				if (bool) $('#calendrier-loading').show();
 				else $('#calendrier-loading').hide();
 			},
-			businessHours: {
-				// days of week. an array of zero-based day of week integers (0=Sunday)
-				daysOfWeek:  [(#CONFIG{cita/days_week}|sinon{#LISTE{1, 2, 3, 4}}|json_encode)] , // Monday - Thursday
-			
-				startTime: '#CONFIG{cita/start_time,10:00}', // a start time (10am in this example)
-				endTime: '#CONFIG{cita/end_time,18:00}', // an end time (6pm in this example)
-			},
+			businessHours: [(#GET{businessHours}|json_encode)]
 	})
-
 });
 /*]]>*/</script>
 <div id="agenda">
