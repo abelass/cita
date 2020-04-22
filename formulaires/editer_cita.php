@@ -26,6 +26,8 @@ include_spip('inc/editer');
  *     Identifiant de l'objet parent (si connu)
  * @param string $retour
  *     URL de redirection après le traitement
+ * @param array $options
+ *     Des options a passer ua formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -40,7 +42,16 @@ include_spip('inc/editer');
  * @return string
  *     Hash du formulaire
  */
-function formulaires_editer_cita_identifier_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+function formulaires_editer_cita_identifier_dist(
+	$id_cita = 'new', 
+	$id_auteur = 0, 
+	$retour = '', 
+	$options = [],
+	$associer_objet = '', 
+	$lier_trad = 0, 
+	$config_fonc = '', 
+	$row = array(), 
+	$hidden = '') {
 	return serialize(array(intval($id_cita), $associer_objet));
 }
 
@@ -57,6 +68,8 @@ function formulaires_editer_cita_identifier_dist($id_cita = 'new', $id_auteur = 
  *     Identifiant de l'objet parent (si connu)
  * @param string $retour
  *     URL de redirection après le traitement
+ * @param array $options
+ *     Des options a passer ua formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -71,8 +84,28 @@ function formulaires_editer_cita_identifier_dist($id_cita = 'new', $id_auteur = 
  * @return array
  *     Environnement du formulaire
  */
-function formulaires_editer_cita_charger_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+function formulaires_editer_cita_charger_dist(
+	$id_cita = 'new', 
+	$id_auteur = 0, 
+	$retour = '', 
+	$options = [],
+	$associer_objet = '', 
+	$lier_trad = 0, 
+	$config_fonc = '', 
+	$row = array(), 
+	$hidden = '') {
+	include_spip('inc/config');
+	$config = lire_config('cita');
+	
 	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, $id_auteur, $lier_trad, $retour, $config_fonc, $row, $hidden);
+
+	if (!intval($id_cita)) {
+		$valeurs['statut'] = isset($config['statut_defaut']) ? $config['statut_defaut'] : 'prepa';
+		$valeurs['_hidden'] .= '<input type="hidden" name="statut" value="'.$valeurs['statut'].'" />'; 
+		$valeurs['date_debut'] = _request('date_debut') ? _request('date_debut') : '0000-00-00 00:00:00';
+		$valeurs['date_fin'] = _request('date_debut') ? _request('date_debut') : '0000-00-00 00:00:00';
+	}
+	
 	if (!$valeurs['id_auteur']) {
 		$valeurs['id_auteur'] = $id_auteur;
 	}
@@ -92,6 +125,8 @@ function formulaires_editer_cita_charger_dist($id_cita = 'new', $id_auteur = 0, 
  *     Identifiant de l'objet parent (si connu)
  * @param string $retour
  *     URL de redirection après le traitement
+ * @param array $options
+ *     Des options a passer ua formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -106,7 +141,16 @@ function formulaires_editer_cita_charger_dist($id_cita = 'new', $id_auteur = 0, 
  * @return array
  *     Tableau des erreurs
  */
-function formulaires_editer_cita_verifier_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+function formulaires_editer_cita_verifier_dist(
+	$id_cita = 'new', 
+	$id_auteur = 0, 
+	$retour = '', 
+	$options = [],
+	$associer_objet = '', 
+	$lier_trad = 0, 
+	$config_fonc = '',
+	$row = array(), 
+	$hidden = '') {
 	$erreurs = [];
 
 	$erreurs = formulaires_editer_objet_verifier('cita', $id_cita, array('date_debut', 'date_fin'));
@@ -114,9 +158,9 @@ function formulaires_editer_cita_verifier_dist($id_cita = 'new', $id_auteur = 0,
 	$verifier = charger_fonction('verifier', 'inc');
 
 	foreach (['date_debut', 'date_fin'] AS $champ) {
-		list($date, $heure) =  explode(' ', _request($champ));
+		print_r(_request($champ)) ;
 		$normaliser = null;
-		if ($erreur = $verifier(['date' => $date, 'heure' => $heure], 'date', ['normaliser'=>'datetime'], $normaliser)) {
+		if ($erreur = $verifier(_request($champ), 'date', ['normaliser'=>'datetime'], $normaliser)) {
 			$erreurs[$champ] = $erreur;
 		// si une valeur de normalisation a ete transmis, la prendre.
 		} elseif (!is_null($normaliser)) {
@@ -144,6 +188,8 @@ function formulaires_editer_cita_verifier_dist($id_cita = 'new', $id_auteur = 0,
  *     Identifiant de l'objet parent (si connu)
  * @param string $retour
  *     URL de redirection après le traitement
+ * @param array $options
+ *     Des options a passer ua formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -158,7 +204,16 @@ function formulaires_editer_cita_verifier_dist($id_cita = 'new', $id_auteur = 0,
  * @return array
  *     Retours des traitements
  */
-function formulaires_editer_cita_traiter_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+function formulaires_editer_cita_traiter_dist(
+	$id_cita = 'new', 
+	$id_auteur = 0, 
+	$retour = '', 
+	$options = [],
+	$associer_objet = '', 
+	$lier_trad = 0, 
+	$config_fonc = '', 
+	$row = array(), 
+	$hidden = '') {
 	$retours = formulaires_editer_objet_traiter('cita', $id_cita, $id_auteur, $lier_trad, $retour, $config_fonc, $row, $hidden);
 
 	// Un lien a prendre en compte ?

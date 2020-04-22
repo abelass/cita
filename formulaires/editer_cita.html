@@ -8,16 +8,17 @@
 		<input type="hidden" name="id_cita" value="#ENV{id_cita}" />
 		<div class="editer-groupe">
 
-			[(#SAISIE{input, date_debut, obligatoire=oui,
+			[(#SAISIE{date, 
+				date_debut, 
+				obligatoire=oui,
+				horaire=oui,
 				label=<:cita:champ_date_debut_label:>})]
 
-			[(#SAISIE{input, heure_debut, obligatoire=oui,
-				label=<:cita:champ_date_debut_label:>})]
-
-			[(#SAISIE{input, date_fin, obligatoire=oui,
-				label=<:cita:champ_date_fin_label:>})]
-
-			[(#SAISIE{input, heure_fin, obligatoire=oui,
+			[(#SAISIE{
+				date,
+				date_fin,
+				horaire=oui,
+				obligatoire=oui,
 				label=<:cita:champ_date_fin_label:>})]
 
 			[(#SAISIE{auteurs, id_auteur,
@@ -25,10 +26,6 @@
 
 			[(#SAISIE{input, nom,
 				label=<:cita:champ_nom_label:>})]
-
-			[(#SAISIE{auteurs, id_auteur, obligatoire=oui,
-				label=<:auteur:titre_auteur:>})]
-
 
 			[(#SAISIE{input, email,
 				label=<:cita:champ_email_label:>})]

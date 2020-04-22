@@ -37,18 +37,6 @@
 	]
 ]
 
-<div class="nettoyeur"></div>
-<div class="liste">
-	<BOUCLE_objetslies(spip_citas_liens){id_cita}{0,1}><h3><:cita:titre_objets_lies_cita:></h3></BOUCLE_objetslies>
-
-	<BOUCLE_listeobjets(spip_citas_liens){id_cita}{fusion objet}{par objet}>
-		#SET{table,#OBJET|table_objet}
-		[(#SET{titre,[#OBJET:info_(#GET{table})_liees_cita]})]
-		[(#SET{liste,#VAL{prive/objets/liste/#GET{table}}|trouver_fond|?{#GET{table},objets_lies_cita}})]
-		<INCLURE{fond=prive/objets/liste/#GET{liste},objet,id_cita,ajax,env} />
-	</BOUCLE_listeobjets>
-</div>
-
 #PIPELINE{afficher_complement_objet,#ARRAY{args,#ARRAY{type,cita,id,#ID_CITA},data,'<div class="nettoyeur"></div>'}}
 
 #BOITE_FERMER
