@@ -22,12 +22,14 @@ include_spip('inc/editer');
  *
  * @param int|string $id_cita
  *     Identifiant du cita. 'new' pour un nouveau cita.
- * @param int $id_auteur
- *     Identifiant de l'objet parent (si connu)
+ * @param int $id_donneur
+ *     Identifiant du donneur du rendez-vous.
+ * @param int $id_prenneur
+ *     Identifiant du prenneur du rendez-vous.
  * @param string $retour
- *     URL de redirection après le traitement
+ *     URL de redirection après le traitement.
  * @param array $options
- *     Des options a passer ua formulaire.
+ *     Des options a passer au formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -44,7 +46,8 @@ include_spip('inc/editer');
  */
 function formulaires_editer_cita_identifier_dist(
 	$id_cita = 'new', 
-	$id_auteur = 0, 
+	$id_donneur = 0, 
+	$id_prenneur = 0, 
 	$retour = '', 
 	$options = [],
 	$associer_objet = '', 
@@ -64,12 +67,14 @@ function formulaires_editer_cita_identifier_dist(
  *
  * @param int|string $id_cita
  *     Identifiant du cita. 'new' pour un nouveau cita.
- * @param int $id_auteur
- *     Identifiant de l'objet parent (si connu)
+ * @param int $id_donneur
+ *     Identifiant du donneur du rendez-vous.
+ * @param int $id_prenneur
+ *     Identifiant du prenneur du rendez-vous.
  * @param string $retour
  *     URL de redirection après le traitement
  * @param array $options
- *     Des options a passer ua formulaire.
+ *     Des options a passer au formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -86,7 +91,8 @@ function formulaires_editer_cita_identifier_dist(
  */
 function formulaires_editer_cita_charger_dist(
 	$id_cita = 'new', 
-	$id_auteur = 0, 
+	$id_donneur = 0, 
+	$id_prenneur = 0,  
 	$retour = '', 
 	$options = [],
 	$associer_objet = '', 
@@ -97,10 +103,26 @@ function formulaires_editer_cita_charger_dist(
 	include_spip('inc/config');
 	$config = lire_config('cita');
 
-	$espace_prive = test_espace_prive();
+	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
 
-	
-	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, $id_auteur, $lier_trad, $retour, $config_fonc, $row, $hidden);
+	$espace_prive = $valeurs['espace_prive'] = test_espace_prive();
+
+	// Ajouter les options aux valeurs.
+	foreach ($options AS $cle => $valeur) {
+		$valeurs[$cle] = $valeur;
+	}
+
+	// Les configs
+	foreach ($config AS $cle => $valeur) {
+		// Une variable pour chaque config.
+		$$cle = $valeur;
+			// Ajouter aux valeurs les configs non surchargées via options .
+		if ($valeur AND 
+			(!isset($options[$cle]) OR 
+				(isset($options[$cle]) AND !$options[$cle]))) {
+			$valeurs[$cle] = $valeur;
+		}
+	}
 
 	if (!intval($id_cita)) {
 		$valeurs['statut'] = isset($config['statut_defaut']) ? $config['statut_defaut'] : 'prepa';
@@ -111,16 +133,46 @@ function formulaires_editer_cita_charger_dist(
 
 	$valeurs['dates_editables'] = true;
 	if (!$espace_prive) {
-		if (isset($config['dates_editables']) AND !$config['dates_editables']) {
+		if (!$dates_editables) {
 			$valeurs['dates_editables'] = false;
 			$valeurs['_hidden'] .= '<input type="hidden" name="date_debut" value="' . $valeurs['date_debut'] . '" />'; 
 			$valeurs['_hidden'] .= '<input type="hidden" name="date_fin" value="' . $valeurs['date_fin'] . '" />'; 
 		}
-		
 	}
 	
-	if (!$valeurs['id_auteur']) {
-		$valeurs['id_auteur'] = $id_auteur;
+	if (!$valeurs['id_donneur']) {
+		$valeurs['id_donneur'] = $id_donneur;
+	}
+
+	if (!$valeurs['id_prenneur']) {
+		$valeurs['id_prenneur'] = $id_prenneur;
+	}
+
+	$valeurs['id_prenneur_editables'] = true;
+	if ($valeurs['id_prenneur'] > 0) {
+		$valeurs['_hidden'] .= '<input type="hidden" name="id_prenneur" value="' . $valeurs['id_prenneur'] . '" />'; 
+		$valeurs['id_prenneur_editables'] = false;
+	}
+
+	// Qui
+
+	$valeurs['donneurs'] = isset(${'donneur_' . $choix_donneur}) ? ${'donneur_' . $choix_donneur} : [];
+	
+	if (!$espace_prive AND $id_donneur > 0) {
+		$valeurs['donneurs'] = [$id_donneur];
+	}
+
+	// La ou les donneurs de rendez-vous potentiels
+	if (count($valeurs['donneurs']) == 1) {
+		$valeurs['_hidden'] .= '<input type="hidden" name="id_donneur" value="' . $valeurs['donneurs'][0] . '" />'; 
+	}
+	else {
+		$sql = sql_select('id_auteur,nom', 'spip_auteurs', 'id_auteur IN (' .implode(',', $valeurs['donneurs']) . ')', '', 'nom ASC');
+		unset($valeurs['donneurs']);
+		while ($donnees = sql_fetch($sql)) {
+			$valeurs['donneurs'][$donnees['id_auteur']] = $donnees['nom'];
+		}
+		
 	}
 	return $valeurs;
 }
@@ -134,12 +186,14 @@ function formulaires_editer_cita_charger_dist(
  *
  * @param int|string $id_cita
  *     Identifiant du cita. 'new' pour un nouveau cita.
- * @param int $id_auteur
- *     Identifiant de l'objet parent (si connu)
+ * @param int $id_donneur
+ *     Identifiant du donneur du rendez-vous.
+ * @param int $id_prenneur
+ *     Identifiant du prenneur du rendez-vous.)
  * @param string $retour
  *     URL de redirection après le traitement
  * @param array $options
- *     Des options a passer ua formulaire.
+ *     Des options a passer au formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -156,7 +210,8 @@ function formulaires_editer_cita_charger_dist(
  */
 function formulaires_editer_cita_verifier_dist(
 	$id_cita = 'new', 
-	$id_auteur = 0, 
+	$id_donneur = 0, 
+	$id_prenneur = 0,  
 	$retour = '', 
 	$options = [],
 	$associer_objet = '', 
@@ -197,12 +252,14 @@ function formulaires_editer_cita_verifier_dist(
  *
  * @param int|string $id_cita
  *     Identifiant du cita. 'new' pour un nouveau cita.
- * @param int $id_auteur
- *     Identifiant de l'objet parent (si connu)
+ * @param int $id_donneur
+ *     Identifiant du donneur du rendez-vous.
+ * @param int $id_prenneur
+ *     Identifiant du prenneur du rendez-vous.
  * @param string $retour
  *     URL de redirection après le traitement
  * @param array $options
- *     Des options a passer ua formulaire.
+ *     Des options a passer au formulaire.
  * @param string $associer_objet
  *     Éventuel `objet|x` indiquant de lier le cita créé à cet objet,
  *     tel que `article|3`
@@ -219,7 +276,8 @@ function formulaires_editer_cita_verifier_dist(
  */
 function formulaires_editer_cita_traiter_dist(
 	$id_cita = 'new', 
-	$id_auteur = 0, 
+	$id_donneur = 0, 
+	$id_prenneur = 0,  
 	$retour = '', 
 	$options = [],
 	$associer_objet = '', 

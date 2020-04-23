@@ -19,7 +19,14 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_id_donneur_label' => 'Donneur',
 	'champ_id_preneur_label' => 'Preneur',
 	'champ_nom_preneur_label' => 'Nom preneur',
+	'choix_donneur_label' => 'Choisir le(s) donneur(s) de rendez-vous :',	
+	'choix_label' => 'Choisir :',
 	'confirmer_supprimer_cita' => 'Confirmez-vous la suppression de cet rendez-vous ?',
+
+	// D
+	'donneur_choix_administrateur' => 'un administrateur',	
+	'donneur_choix_webmaster' => 'un webmestre',
+
 
 	// F
 	'fieldset_label_calendrier' => 'Calendrier',
@@ -43,6 +50,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'label_end_time' => 'Fin de la journée : ',		
 	'label_start_time' => 'Début de la journée : ',		
 	'label_statut_defaut' => 'Statut par défaut du rendez vous : ',	
+
+
 
 	// R
 	'retirer_lien_cita' => 'Retirer ce rendez-vous',

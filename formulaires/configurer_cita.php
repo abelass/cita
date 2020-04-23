@@ -22,6 +22,11 @@ function formulaires_configurer_cita_saisies_dist() {
 		$jours_semaine[$x - 1] = _T('date_jour_' . $x);
 	} 
 
+	$choix_donneur = [
+		'webmaster' => _T('cita:donneur_choix_webmaster'),
+		'administrateur' => _T('cita:donneur_choix_administrateur'),
+	];
+
 	return [
 		[
 			'saisie' => 'fieldset',
@@ -39,6 +44,41 @@ function formulaires_configurer_cita_saisies_dist() {
 						'label' => _T('cita:label_statut_defaut'),
 						'defaut' => $config['statut_defaut']
 					],
+				],
+				[
+					'saisie' => 'selection',
+					'options' => [
+						'nom' => 'choix_donneur',
+						'label' => _T('cita:choix_donneur_label'),
+						'cacher_option_intro' => 'on',
+						'defaut' => $config['choix_donneur'],
+						'data' => $choix_donneur
+					]
+				],
+				[
+					'saisie' => 'auteurs',
+					'options' => [
+						'nom' => 'donneur_webmaster',
+						'label' => _T('cita:choix_label'),
+						'statut' => '0minirezo',
+						'cacher_option_intro' => "on",
+						'webmestre' => 'oui',
+						'multiple' => 'oui',
+						'defaut' => $config['prenneur_webmaster'],
+						'afficher_si' => '@choix_donneur@ == "webmaster"',
+					]
+				],
+				[
+					'saisie' => 'auteurs',
+					'options' => [
+						'nom' => 'donneur_administrateur',
+						'label' => _T('cita:choix_label'),
+						'statut' => '0minirezo',
+						'cacher_option_intro' => "on",
+						'multiple' => 'oui',
+						'defaut' => $config['donneur_administrateur'],
+						'afficher_si' => '@choix_donneur@ == "administrateur"',
+					]
 				],
 				[
 					'saisie' => 'fieldset',

@@ -7,35 +7,8 @@
 		#ACTION_FORMULAIRE{#ENV{action}}
 		<input type="hidden" name="id_cita" value="#ENV{id_cita}" />
 		<div class="editer-groupe">
-		[(#ENV{dates_editables}|oui)
-			[(#SAISIE{
-				date, 
-				date_debut, 
-				obligatoire=oui,
-				horaire=oui,
-				label=<:cita:champ_date_debut_label:>})]
-
-			[(#SAISIE{
-				date,
-				date_fin,
-				horaire=oui,
-				obligatoire=oui,
-				label=<:cita:champ_date_fin_label:>})]
-			]
-
-[(#SAISIE{auteurs, id_donneur, obligatoire=oui,
-				label=<:cita:champ_id_donneur_label:>})]
-
-			[(#SAISIE{auteurs, id_preneur,
-				label=<:cita:champ_id_preneur_label:>})]
-
-			[(#SAISIE{input, nom_preneur,
-				label=<:cita:champ_nom_preneur_label:>})]
-
-			[(#SAISIE{input, email_preneur,
-				label=<:cita:champ_email_preneur_label:>})]
-
-
+			<INCLURE{fond=formulaires/inc-editer_cita_dates, env} />
+			<INCLURE{fond=formulaires/inc-editer_cita_personnes, env} />
 			[(#SAISIE{textarea, commetaire,
 				label=<:cita:champ_commetaire_label:>,
 				conteneur_class=pleine_largeur, class=inserer_barre_edition, rows=4})]

@@ -1,0 +1,18 @@
+[(#ENV{donneurs}|count|>{1}|oui)
+  [(#SAISIE{
+    selection, 
+    id_donneur, 
+    obligatoire=oui,
+    data=#ENV{donneurs},
+    label=<:cita:champ_id_donneur_label:>})]
+]
+
+
+[(#SAISIE{auteurs, id_preneur,
+  label=<:cita:champ_id_preneur_label:>})]
+
+[(#SAISIE{input, nom_preneur,
+  label=<:cita:champ_nom_preneur_label:>})]
+
+[(#SAISIE{input, email_preneur,
+  label=<:cita:champ_email_preneur_label:>})]
