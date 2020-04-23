@@ -1,17 +1,18 @@
-[(#ENV{dates_editables}|oui)
-  [(#SAISIE{
-    date, 
-    date_debut, 
-    obligatoire=oui,
-    horaire=oui,
-    label=<:cita:champ_date_debut_label:>
-  })]
 
-  [(#SAISIE{
-    date,
-    date_fin,
-    horaire=oui,
-    obligatoire=oui,
-    label=<:cita:champ_date_fin_label:>
-  })]
+[(#ENV{dates_editables}|oui)
+	[(#SAISIE{
+		date, 
+		date_debut, 
+		obligatoire=oui,
+		horaire=oui,
+		label=<:cita:champ_date_debut_label:>
+	})]
+
+	[(#SAISIE{
+		date,
+		date_fin,
+		horaire=oui,
+		obligatoire=oui,
+		label=<:cita:champ_date_fin_label:>
+	})]
 ]

@@ -1,18 +1,58 @@
 [(#ENV{donneurs}|count|>{1}|oui)
-  [(#SAISIE{
-    selection, 
-    id_donneur, 
-    obligatoire=oui,
-    data=#ENV{donneurs},
-    label=<:cita:champ_id_donneur_label:>})]
+	[(#SAISIE{
+		selection,
+		id_donneur,
+		obligatoire=oui,
+		data=#ENV{donneurs},
+		label=<:cita:champ_id_donneur_label:>})]
+]
+
+[(#ENV{espace_prive}|oui)
+	[(#SAISIE{
+		auteurs,
+		id_preneur,
+		class=chosen,
+		label=<:cita:champ_id_preneur_label:>})]
+		<div class="fieldset fieldset_preneur_donnees saisie_fieldset">
+			<fieldset>
+				<legend class="legend"><span>
+					<:cita:fieldset_label_preneur_donnees:></span></legend>
+					<div class="editer-groupe">
+						<INCLURE{fond=formulaires/inc-editer_cita_personnes_donnees,env} />
+					</div>
+			</fieldset>
+		</div>
+
+	<script type="text/javascript">
+		function hide_fieldset($field, $speed){
+			$($field).hide($speed);
+			$($field+' input').each(function() {
+					$(this).removeAttr('required');
+			});
+		}
+
+		if($("#champ_id_preneur").find("option:selected").val() != "") {
+			hide_fieldset(".fieldset_preneur_donnees");
+		}
+
+		$("#champ_id_preneur").change(function() {
+			if($(this).find("option:selected").val() != "") {
+				hide_fieldset(".fieldset_preneur_donnees",800);
+			}
+			else {
+				$(".fieldset_preneur_donnees").show(800);
+				$(".fieldset_preneur_donnees .obligatoire input").each(function() {
+					$(this).attr('required','required');
+				});
+			}
+		});
+	</script>
+]
+
+[(#ENV{espace_prive}|non)
+	<INCLURE{fond=formulaires/inc-editer_cita_personnes_donnees,env} />
 ]
 
 
-[(#SAISIE{auteurs, id_preneur,
-  label=<:cita:champ_id_preneur_label:>})]
 
-[(#SAISIE{input, nom_preneur,
-  label=<:cita:champ_nom_preneur_label:>})]
 
-[(#SAISIE{input, email_preneur,
-  label=<:cita:champ_email_preneur_label:>})]

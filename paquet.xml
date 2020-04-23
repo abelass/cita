@@ -48,8 +48,8 @@
 	<necessite nom="verifier" compatibilite="[1.9.6;]" />
 
 	<!-- pour des raison de testes, ne pas rendre obligatoire par la suite-->
-	<necessite nom="inscriptionmotdepasse" compatibilite="[1.9.6;]" />
-	<necessite nom="inscriptionconnexion" compatibilite="[1.1.1 ;]" />
+	<necessite nom="inscriptionmotdepasse" compatibilite="[1.1.0;]" />
+	<necessite nom="inscriptionconnexion" compatibilite="[1.1.1;]" />
 
 	<pipeline nom="autoriser" inclure="cita_autorisations.php" />
 

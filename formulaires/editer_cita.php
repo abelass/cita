@@ -24,8 +24,8 @@ include_spip('inc/editer');
  *     Identifiant du cita. 'new' pour un nouveau cita.
  * @param int $id_donneur
  *     Identifiant du donneur du rendez-vous.
- * @param int $id_prenneur
- *     Identifiant du prenneur du rendez-vous.
+ * @param int $id_preneur
+ *     Identifiant du preneur du rendez-vous.
  * @param string $retour
  *     URL de redirection après le traitement.
  * @param array $options
@@ -45,15 +45,15 @@ include_spip('inc/editer');
  *     Hash du formulaire
  */
 function formulaires_editer_cita_identifier_dist(
-	$id_cita = 'new', 
-	$id_donneur = 0, 
-	$id_prenneur = 0, 
-	$retour = '', 
+	$id_cita = 'new',
+	$id_donneur = 0,
+	$id_preneur = 0,
+	$retour = '',
 	$options = [],
-	$associer_objet = '', 
-	$lier_trad = 0, 
-	$config_fonc = '', 
-	$row = array(), 
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = array(),
 	$hidden = '') {
 	return serialize(array(intval($id_cita), $associer_objet));
 }
@@ -69,8 +69,8 @@ function formulaires_editer_cita_identifier_dist(
  *     Identifiant du cita. 'new' pour un nouveau cita.
  * @param int $id_donneur
  *     Identifiant du donneur du rendez-vous.
- * @param int $id_prenneur
- *     Identifiant du prenneur du rendez-vous.
+ * @param int $id_preneur
+ *     Identifiant du preneur du rendez-vous.
  * @param string $retour
  *     URL de redirection après le traitement
  * @param array $options
@@ -90,21 +90,24 @@ function formulaires_editer_cita_identifier_dist(
  *     Environnement du formulaire
  */
 function formulaires_editer_cita_charger_dist(
-	$id_cita = 'new', 
-	$id_donneur = 0, 
-	$id_prenneur = 0,  
-	$retour = '', 
+	$id_cita = 'new',
+	$id_donneur = 0,
+	$id_preneur = 0,
+	$retour = '',
 	$options = [],
-	$associer_objet = '', 
-	$lier_trad = 0, 
-	$config_fonc = '', 
-	$row = array(), 
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = array(),
 	$hidden = '') {
 	include_spip('inc/config');
+	global $visiteur_session;
+
 	$config = lire_config('cita');
 
 	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
 
+	$valeurs['id_auteur'] = isset($visiteur_session['id_auteur']) ? $visiteur_session['id_auteur'] : '';
 	$espace_prive = $valeurs['espace_prive'] = test_espace_prive();
 
 	// Ajouter les options aux valeurs.
@@ -117,8 +120,8 @@ function formulaires_editer_cita_charger_dist(
 		// Une variable pour chaque config.
 		$$cle = $valeur;
 			// Ajouter aux valeurs les configs non surchargées via options .
-		if ($valeur AND 
-			(!isset($options[$cle]) OR 
+		if ($valeur AND
+			(!isset($options[$cle]) OR
 				(isset($options[$cle]) AND !$options[$cle]))) {
 			$valeurs[$cle] = $valeur;
 		}
@@ -126,7 +129,7 @@ function formulaires_editer_cita_charger_dist(
 
 	if (!intval($id_cita)) {
 		$valeurs['statut'] = isset($config['statut_defaut']) ? $config['statut_defaut'] : 'prepa';
-		$valeurs['_hidden'] .= '<input type="hidden" name="statut" value="' . $valeurs['statut'] . '" />'; 
+		$valeurs['_hidden'] .= '<input type="hidden" name="statut" value="' . $valeurs['statut'] . '" />';
 		$valeurs['date_debut'] = _request('date_debut') ? _request('date_debut') : '0000-00-00 00:00:00';
 		$valeurs['date_fin'] = _request('date_fin') ? _request('date_fin') : '0000-00-00 00:00:00';
 	}
@@ -135,36 +138,31 @@ function formulaires_editer_cita_charger_dist(
 	if (!$espace_prive) {
 		if (!$dates_editables) {
 			$valeurs['dates_editables'] = false;
-			$valeurs['_hidden'] .= '<input type="hidden" name="date_debut" value="' . $valeurs['date_debut'] . '" />'; 
-			$valeurs['_hidden'] .= '<input type="hidden" name="date_fin" value="' . $valeurs['date_fin'] . '" />'; 
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_debut" value="' . $valeurs['date_debut'] . '" />';
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_fin" value="' . $valeurs['date_fin'] . '" />';
 		}
 	}
-	
+
 	if (!$valeurs['id_donneur']) {
 		$valeurs['id_donneur'] = $id_donneur;
 	}
 
-	if (!$valeurs['id_prenneur']) {
-		$valeurs['id_prenneur'] = $id_prenneur;
+	if (!$valeurs['id_preneur']) {
+		$valeurs['id_preneur'] = $id_preneur;
 	}
 
-	$valeurs['id_prenneur_editables'] = true;
-	if ($valeurs['id_prenneur'] > 0) {
-		$valeurs['_hidden'] .= '<input type="hidden" name="id_prenneur" value="' . $valeurs['id_prenneur'] . '" />'; 
-		$valeurs['id_prenneur_editables'] = false;
-	}
 
-	// Qui
-
+	// Les donneurs de rendez-vous
 	$valeurs['donneurs'] = isset(${'donneur_' . $choix_donneur}) ? ${'donneur_' . $choix_donneur} : [];
-	
+
+	// Dans l'espace publique si id_donneur donnée, on affiche pas le formulaire
 	if (!$espace_prive AND $id_donneur > 0) {
 		$valeurs['donneurs'] = [$id_donneur];
 	}
 
-	// La ou les donneurs de rendez-vous potentiels
+	// La ou les donneurs de rendez-vous potentiels, su plusieurs on génère un tableau, sinon un champ hidden.
 	if (count($valeurs['donneurs']) == 1) {
-		$valeurs['_hidden'] .= '<input type="hidden" name="id_donneur" value="' . $valeurs['donneurs'][0] . '" />'; 
+		$valeurs['_hidden'] .= '<input type="hidden" name="id_donneur" value="' . $valeurs['donneurs'][0] . '" />';
 	}
 	else {
 		$sql = sql_select('id_auteur,nom', 'spip_auteurs', 'id_auteur IN (' .implode(',', $valeurs['donneurs']) . ')', '', 'nom ASC');
@@ -172,8 +170,15 @@ function formulaires_editer_cita_charger_dist(
 		while ($donnees = sql_fetch($sql)) {
 			$valeurs['donneurs'][$donnees['id_auteur']] = $donnees['nom'];
 		}
-		
 	}
+
+	// Les preneurs de rendez-vous
+	if (!$espace_prive) {
+		$valeurs['_hidden'] .= '<input type="hidden" name="id_preneur" value="' . $id_preneur . '" />';
+	}
+
+
+
 	return $valeurs;
 }
 
@@ -188,8 +193,8 @@ function formulaires_editer_cita_charger_dist(
  *     Identifiant du cita. 'new' pour un nouveau cita.
  * @param int $id_donneur
  *     Identifiant du donneur du rendez-vous.
- * @param int $id_prenneur
- *     Identifiant du prenneur du rendez-vous.)
+ * @param int $id_preneur
+ *     Identifiant du preneur du rendez-vous.)
  * @param string $retour
  *     URL de redirection après le traitement
  * @param array $options
@@ -209,20 +214,20 @@ function formulaires_editer_cita_charger_dist(
  *     Tableau des erreurs
  */
 function formulaires_editer_cita_verifier_dist(
-	$id_cita = 'new', 
-	$id_donneur = 0, 
-	$id_prenneur = 0,  
-	$retour = '', 
+	$id_cita = 'new',
+	$id_donneur = 0,
+	$id_preneur = 0,
+	$retour = '',
 	$options = [],
-	$associer_objet = '', 
-	$lier_trad = 0, 
+	$associer_objet = '',
+	$lier_trad = 0,
 	$config_fonc = '',
-	$row = array(), 
+	$row = array(),
 	$hidden = '') {
 	$erreurs = [];
 
 	$erreurs = formulaires_editer_objet_verifier('cita', $id_cita, array('date_debut', 'date_fin'));
-	
+
 	$verifier = charger_fonction('verifier', 'inc');
 
 	foreach (['date_debut', 'date_fin'] AS $champ) {
@@ -254,8 +259,8 @@ function formulaires_editer_cita_verifier_dist(
  *     Identifiant du cita. 'new' pour un nouveau cita.
  * @param int $id_donneur
  *     Identifiant du donneur du rendez-vous.
- * @param int $id_prenneur
- *     Identifiant du prenneur du rendez-vous.
+ * @param int $id_preneur
+ *     Identifiant du preneur du rendez-vous.
  * @param string $retour
  *     URL de redirection après le traitement
  * @param array $options
@@ -275,15 +280,15 @@ function formulaires_editer_cita_verifier_dist(
  *     Retours des traitements
  */
 function formulaires_editer_cita_traiter_dist(
-	$id_cita = 'new', 
-	$id_donneur = 0, 
-	$id_prenneur = 0,  
-	$retour = '', 
+	$id_cita = 'new',
+	$id_donneur = 0,
+	$id_preneur = 0,
+	$retour = '',
 	$options = [],
-	$associer_objet = '', 
-	$lier_trad = 0, 
-	$config_fonc = '', 
-	$row = array(), 
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = array(),
 	$hidden = '') {
 	$retours = formulaires_editer_objet_traiter('cita', $id_cita, $id_auteur, $lier_trad, $retour, $config_fonc, $row, $hidden);
 
@@ -293,9 +298,9 @@ function formulaires_editer_cita_traiter_dist(
 
 		if ($objet and $id_objet and autoriser('modifier', $objet, $id_objet)) {
 			include_spip('action/editer_liens');
-			
+
 			objet_associer(array('cita' => $id_cita), array($objet => $id_objet));
-			
+
 			if (isset($retours['redirect'])) {
 				$retours['redirect'] = parametre_url($retours['redirect'], 'id_lien_ajoute', $id_cita, '&');
 			}

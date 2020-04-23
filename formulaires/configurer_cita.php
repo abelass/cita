@@ -20,7 +20,7 @@ function formulaires_configurer_cita_saisies_dist() {
 	$jours_semaine = [];
 	for ($x = 1; $x <= 7; $x++) {
 		$jours_semaine[$x - 1] = _T('date_jour_' . $x);
-	} 
+	}
 
 	$choix_donneur = [
 		'webmaster' => _T('cita:donneur_choix_webmaster'),
@@ -78,6 +78,15 @@ function formulaires_configurer_cita_saisies_dist() {
 						'multiple' => 'oui',
 						'defaut' => $config['donneur_administrateur'],
 						'afficher_si' => '@choix_donneur@ == "administrateur"',
+					]
+				],
+				[
+					'saisie' => 'oui_non',
+					'options' => [
+						'nom' => 'identification_preneur_obligatoire',
+						'label' => _T('cita:label_identification_preneur_obligatoire'),
+						'explication' => _T('cita:explication_identification_preneur_obligatoire'),
+						'defaut' => $config['identification_preneur_obligatoire'],
 					]
 				],
 				[

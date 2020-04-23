@@ -1,0 +1,15 @@
+<div class="login">
+	#SET{url,#URL_PAGE{login}|parametre_url{url,#SELF}}
+	[(#SET{lien,#GET{url}|lien_ou_expose{
+		<:objets_location:connectez_vous:>,
+		'',
+		login_modal,
+		<:lien_connecter:>,
+		nofollow,
+	}})]
+
+	<strong class="explication"><:cita:explication_login{lien=#GET{lien}}:></strong>
+</div>
+[
+	(#FORMULAIRE_INSCRIPTION{6forum,'', [(#SELF|parametre_url{hash,#VAR{}|time})]})
+]
