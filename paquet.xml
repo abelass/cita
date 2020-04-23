@@ -6,17 +6,17 @@
 	compatibilite="[3.2.7;3.3.*]"
 	logo="prive/themes/spip/images/cita-64.png"
 	documentation=""
-	schema="0.0.1" 
+	schema="0.0.1"
 >
 	<!--
 		Paquet généré le 2020-04-21 10:06:39
-		(Vous pouvez bien entendu supprimer ces commentaires) 
+		(Vous pouvez bien entendu supprimer ces commentaires)
 	-->
 
 	<nom>Cita</nom>
 	<!-- Gestionnaire de rendez-vous -->
 
-	<!-- cette balise peut être présente plusieurs fois s'il y a plusieurs auteurs --> 
+	<!-- cette balise peut être présente plusieurs fois s'il y a plusieurs auteurs -->
 	<auteur lien='https://web-simple.eu'>Rainer Müller</auteur>
 	<credit lien='https://thenounproject.com/'>
 		Logo 'appointment' by visual language from the Noun Project
@@ -33,31 +33,34 @@
 		* pipelines
 		<pipeline nom="autoriser" inclure="cita_autorisations.php" />
 		<pipeline nom="insert_head" inclure="cita_pipelines.php" />
-		* declarer un pipeline 
+		* declarer un pipeline
 		<pipeline nom="mon_pipeline" action="" />
 		* parents de menus de SPIP :
 				menu_accueil (à éviter), menu_edition, menu_publication,
-				menu_activite, menu_squelette, menu_administration, menu_configuration 
+				menu_activite, menu_squelette, menu_administration, menu_configuration
 		<menu nom="cita" titre="cita:cita_titre" parent="menu_edition"  icone="images/cita-16.png" />
-		* parents d'onglets... configuration, plugins, statistiques, ... 
+		* parents d'onglets... configuration, plugins, statistiques, ...
 		<onglet nom="cita" titre="cita:cita_titre" parent="configuration" icone="images/cita-24.png" />
 	-->
 
-	<necessite nom="saisies" compatibilite="[3.36.2;]" /> 
+	<necessite nom="saisies" compatibilite="[3.36.2;]" />
 	<necessite nom="dates_outils" compatibilite="[1.1.0;]" />
-	<necessite nom="verifier" compatibilite="[1.9.6;]" /> 
+	<necessite nom="verifier" compatibilite="[1.9.6;]" />
 
+	<!-- pour des raison de testes, ne pas rendre obligatoire par la suite-->
+	<necessite nom="inscriptionmotdepasse" compatibilite="[1.9.6;]" />
+	<necessite nom="inscriptionconnexion" compatibilite="[1.1.1 ;]" />
 
-	<pipeline nom="autoriser" inclure="cita_autorisations.php" /> 
+	<pipeline nom="autoriser" inclure="cita_autorisations.php" />
 
-	<pipeline nom="declarer_tables_objets_sql" inclure="base/cita.php" /> 
-	<pipeline nom="declarer_tables_interfaces" inclure="base/cita.php" /> 
-	<pipeline nom="affiche_enfants" inclure="cita_pipelines.php" /> 
-	<pipeline nom="boite_infos" inclure="cita_pipelines.php" /> 
-	<pipeline nom="objet_compte_enfants" inclure="cita_pipelines.php" /> 
-	<pipeline nom="optimiser_base_disparus" inclure="cita_pipelines.php" /> 
+	<pipeline nom="declarer_tables_objets_sql" inclure="base/cita.php" />
+	<pipeline nom="declarer_tables_interfaces" inclure="base/cita.php" />
+	<pipeline nom="affiche_enfants" inclure="cita_pipelines.php" />
+	<pipeline nom="boite_infos" inclure="cita_pipelines.php" />
+	<pipeline nom="objet_compte_enfants" inclure="cita_pipelines.php" />
+	<pipeline nom="optimiser_base_disparus" inclure="cita_pipelines.php" />
 
-	<menu nom="citas" titre="cita:titre_citas" parent="menu_edition" icone="images/cita-16.png" action="citas" /> 
+	<menu nom="citas" titre="cita:titre_citas" parent="menu_edition" icone="images/cita-16.png" action="citas" />
 
 	<chemin path="squelettes" />
 	<chemin path="" />
