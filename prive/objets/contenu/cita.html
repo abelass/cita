@@ -9,10 +9,16 @@
 	<span dir="#LANG_DIR" class="#EDIT{date_fin} date_fin">(#DATE_FIN)</span>
 </div>]
 
-[<div class="champ contenu_id_auteur[ (#ID_AUTEUR*|strlen|?{'',vide})]">
-	<label><:cita:champ_id_auteur_label:> : </label>
-	<span dir="#LANG_DIR" class="#EDIT{id_auteur} id_auteur">(#ID_AUTEUR)</span>
+[<div class="champ contenu_id_donneur[ (#ID_DONNEUR*|strlen|?{'',vide})]">
+	<label><:cita:champ_id_donneur_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{id_donneur} id_donneur">(#ID_DONNEUR)</span>
 </div>]
+
+[<div class="champ contenu_id_preneur[ (#ID_PRENEUR*|strlen|?{'',vide})]">
+	<label><:cita:champ_id_preneur_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{id_preneur} id_preneur">(#ID_PRENEUR)</span>
+</div>]
+
 
 [<div class="champ contenu_nom[ (#NOM*|strlen|?{'',vide})]">
 	<label><:cita:champ_nom_label:> : </label>

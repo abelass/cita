@@ -15,9 +15,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_commetaire_label' => 'Commetaire',
 	'champ_date_debut_label' => 'Date début',
 	'champ_date_fin_label' => 'Date fin',
-	'champ_email_label' => 'Email',
-	'champ_id_auteur_label' => 'Auteur',
-	'champ_nom_label' => 'Nom',
+	'champ_email_preneur_label' => 'Email preneur',
+	'champ_id_donneur_label' => 'Donneur',
+	'champ_id_preneur_label' => 'Preneur',
+	'champ_nom_preneur_label' => 'Nom preneur',
 	'confirmer_supprimer_cita' => 'Confirmez-vous la suppression de cet rendez-vous ?',
 
 	// F

@@ -1,14 +1,13 @@
 [(#ID_CITA|oui)
 	[(#AUTORISER{modifier,cita,#ID_CITA}|sinon_interdire_acces)]
-	[(#SET{id_parent,#INFO_ID_AUTEUR{cita,#ID_CITA}})]
 ]
+
 
 [(#ID_CITA|non)
-	#SET{id_parent,#ENV{id_auteur,#ENV{id_parent}}}
-	[(#GET{id_parent}|non|ou{[(#AUTORISER{creercitadans, auteur, #GET{id_parent}})]}|sinon_interdire_acces)]
+	[(#AUTORISER{creer,cita}|sinon_interdire_acces)]
 ]
 
-#SET{redirect,#ENV{redirect}|sinon{#ID_CITA|?{#ID_CITA|generer_url_entite{cita},#GET{id_parent}|?{#GET{id_parent}|generer_url_entite{auteur},#URL_ECRIRE{auteurs}}}}}
+#SET{redirect,#ENV{redirect}|sinon{#ID_CITA|?{#ID_CITA|generer_url_entite{cita},#URL_ECRIRE{citas}}}}
 
 
 
@@ -28,7 +27,7 @@
 	#SET{redirect,'javascript:if (window.jQuery) jQuery(".entete-formulaire .retour a").followLink();'}
 	<div class="ajax">
 ]
-		[(#FORMULAIRE_EDITER_CITA{#ENV{id_cita,oui}, #GET{id_parent}, #GET{redirect}, #ENV{associer_objet}})]
+		[(#FORMULAIRE_EDITER_CITA{#ENV{id_cita,oui}, #GET{redirect}, #ENV{associer_objet}})]
 [(#ENV{retourajax,''}|oui)
 	</div>
 	<script type="text/javascript">/*<!\[CDATA\[*/reloadExecPage('#ENV{exec}');/*\]\]>*/</script>

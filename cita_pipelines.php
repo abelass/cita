@@ -89,7 +89,6 @@ function cita_objet_compte_enfants($flux) {
 	return $flux;
 }
 
-
 /**
  * Optimiser la base de données
  *
@@ -105,5 +104,3 @@ function cita_optimiser_base_disparus($flux) {
 
 	return $flux;
 }
-
-

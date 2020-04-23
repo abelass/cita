@@ -2,7 +2,7 @@
 
 /**
  *  Fichier généré par la Fabrique de plugin v6
- *   le 2020-04-22 10:10:51
+ *   le 2020-04-23 07:50:09
  *
  *  Ce fichier de sauvegarde peut servir à recréer
  *  votre plugin avec le plugin «Fabrique» qui a servi à le créer.
@@ -32,13 +32,17 @@ $data = array (
     'nom' => 'Cita',
     'slogan' => 'Gestionnaire de rendez-vous',
     'description' => 'Gestionnaire de rendez-vous',
+    'logo' => 
+    array (
+      0 => '',
+    ),
     'version' => '0.0.1',
     'auteur' => 'Rainer Müller',
     'auteur_lien' => 'https://web-simple.eu',
     'licence' => 'GNU/GPL v3',
     'categorie' => 'communication',
     'etat' => 'dev',
-    'compatibilite' => '[3.2.7;3.2.*]',
+    'compatibilite' => '[3.2.7;3.3.*]',
     'documentation' => '',
     'administrations' => 'on',
     'schema' => '0.0.1',
@@ -131,8 +135,8 @@ $data = array (
         ),
         2 => 
         array (
-          'nom' => 'Auteur',
-          'champ' => 'id_auteur',
+          'nom' => 'Preneur',
+          'champ' => 'id_preneur',
           'sql' => 'int(11) NOT NULL DEFAULT 0',
           'caracteristiques' => 
           array (
@@ -189,6 +193,22 @@ $data = array (
           'explication' => '',
           'saisie_options' => 'conteneur_class=pleine_largeur, class=inserer_barre_edition, rows=4',
         ),
+        6 => 
+        array (
+          'nom' => 'Donneur',
+          'champ' => 'id_donneur',
+          'sql' => 'int(11) NOT NULL DEFAULT 0',
+          'caracteristiques' => 
+          array (
+            0 => 'editable',
+            1 => 'versionne',
+            2 => 'obligatoire',
+          ),
+          'recherche' => '',
+          'saisie' => 'auteurs',
+          'explication' => '',
+          'saisie_options' => '',
+        ),
       ),
       'champ_titre' => 'date_debut',
       'champ_date' => 'date',
@@ -217,13 +237,13 @@ $data = array (
         'supprimer_objet' => 'Supprimer cet rendez-vous',
         'confirmer_supprimer_objet' => 'Confirmez-vous la suppression de cet rendez-vous ?',
       ),
-      'liaison_directe' => 'spip_auteurs',
+      'liaison_directe' => '',
       'table_liens' => '',
       'vue_liens' => 
       array (
         0 => 'spip_auteurs',
       ),
-      'afficher_liens' => 'on',
+      'afficher_liens' => '',
       'roles' => '',
       'auteurs_liens' => '',
       'vue_auteurs_liens' => '',

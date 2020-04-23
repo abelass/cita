@@ -23,14 +23,18 @@
 				label=<:cita:champ_date_fin_label:>})]
 			]
 
-			[(#SAISIE{auteurs, id_auteur,
-				label=<:cita:champ_id_auteur_label:>})]
+[(#SAISIE{auteurs, id_donneur, obligatoire=oui,
+				label=<:cita:champ_id_donneur_label:>})]
 
-			[(#SAISIE{input, nom,
-				label=<:cita:champ_nom_label:>})]
+			[(#SAISIE{auteurs, id_preneur,
+				label=<:cita:champ_id_preneur_label:>})]
 
-			[(#SAISIE{input, email,
-				label=<:cita:champ_email_label:>})]
+			[(#SAISIE{input, nom_preneur,
+				label=<:cita:champ_nom_preneur_label:>})]
+
+			[(#SAISIE{input, email_preneur,
+				label=<:cita:champ_email_preneur_label:>})]
+
 
 			[(#SAISIE{textarea, commetaire,
 				label=<:cita:champ_commetaire_label:>,

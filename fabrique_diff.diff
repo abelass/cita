@@ -1,152 +1,245 @@
 diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/base/cita.php ../plugins/fabrique_auto/cita/base/cita.php
-66c66
-< 		'titre' => 'nom AS titre, "" AS lang',
+50d49
+< 			'id_auteur'          => 'bigint(21) NOT NULL DEFAULT 0',
+53c52
+< 			'id_auteur'          => 'int(11) NOT NULL DEFAULT 0',
 ---
-> 		'titre' => 'date_debut AS titre, "" AS lang',
-diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/formulaires/editer_cita.html ../plugins/fabrique_auto/cita/formulaires/editer_cita.html
-13a14,17
-> 			[(#SAISIE{auteurs, id_auteur, obligatoire=oui,
-> 				label=<:auteur:titre_auteur:>})]
->
->
-22,25d25
+> 			'id_preneur'         => 'int(11) NOT NULL DEFAULT 0',
+56a56
+> 			'id_donneur'         => 'int(11) NOT NULL DEFAULT 0',
+63d62
+< 			'KEY id_auteur'      => 'id_auteur',
+68,69c67,68
+< 		'champs_editables'  => array('date_debut', 'date_fin', 'id_auteur', 'nom', 'email', 'commetaire', 'id_auteur'),
+< 		'champs_versionnes' => array('date_debut', 'date_fin', 'id_auteur', 'nom', 'email', 'commetaire', 'id_auteur'),
+---
+> 		'champs_editables'  => array('date_debut', 'date_fin', 'id_preneur', 'nom', 'email', 'commetaire', 'id_donneur'),
+> 		'champs_versionnes' => array('date_debut', 'date_fin', 'id_preneur', 'nom', 'email', 'commetaire', 'id_donneur'),
+diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/cita_autorisations.php ../plugins/fabrique_auto/cita/cita_autorisations.php
+120,132d119
+< /**
+<  * Autorisation de créer l'élément (cita) dans un auteurs
+<  *
+<  * @param  string $faire Action demandée
+<  * @param  string $type  Type d'objet sur lequel appliquer l'action
+<  * @param  int    $id    Identifiant de l'objet
+<  * @param  array  $qui   Description de l'auteur demandant l'autorisation
+<  * @param  array  $opt   Options de cette autorisation
+<  * @return bool          true s'il a le droit, false sinon
+< **/
+< function autoriser_auteur_creercitadans_dist($faire, $type, $id, $qui, $opt) {
+< 	return ($id and autoriser('voir', 'auteurs', $id) and autoriser('creer', 'cita'));
+< }
+diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/cita_pipelines.php ../plugins/fabrique_auto/cita/cita_pipelines.php
+24,33d23
+< /**
+<  * Ajouter les objets sur les vues des parents directs
+<  *
+<  * @pipeline affiche_enfants
+<  * @param  array $flux Données du pipeline
+<  * @return array       Données du pipeline
+< **/
+< function cita_affiche_enfants($flux) {
+< 	if ($e = trouver_objet_exec($flux['args']['exec']) and $e['edition'] == false) {
+< 		$id_objet = $flux['args']['id_objet'];
+35,98d24
+< 		if ($e['type'] == 'auteur') {
+< 			$flux['data'] .= recuperer_fond(
+< 				'prive/objets/liste/citas',
+< 				array(
+< 					'titre' => _T('cita:titre_citas'),
+< 					'id_auteur' => $id_objet
+< 				)
+< 			);
 <
+< 			if (autoriser('creercitadans', 'auteurs', $id_objet)) {
+< 				include_spip('inc/presentation');
+< 				$flux['data'] .= icone_verticale(
+< 					_T('cita:icone_creer_cita'),
+< 					generer_url_ecrire('cita_edit', "id_auteur=$id_objet"),
+< 					'cita-24.png',
+< 					'new',
+< 					'right'
+< 				) . "<br class='nettoyeur' />";
+< 			}
+< 		}
+< 	}
+< 	return $flux;
+< }
+<
+< /**
+<  * Afficher le nombre d'éléments dans les parents
+<  *
+<  * @pipeline boite_infos
+<  * @param  array $flux Données du pipeline
+<  * @return array       Données du pipeline
+< **/
+< function cita_boite_infos($flux) {
+< 	if (isset($flux['args']['type']) and isset($flux['args']['id']) and $id = intval($flux['args']['id'])) {
+< 		$texte = '';
+< 		if ($flux['args']['type'] == 'auteur' and $nb = sql_countsel('spip_citas', array("statut='publie'", 'id_auteur=' . $id))) {
+< 			$texte .= '<div>' . singulier_ou_pluriel($nb, 'cita:info_1_cita', 'cita:info_nb_citas') . "</div>\n";
+< 		}
+< 		if ($texte and $p = strpos($flux['data'], '<!--nb_elements-->')) {
+< 			$flux['data'] = substr_replace($flux['data'], $texte, $p, 0);
+< 		}
+< 	}
+< 	return $flux;
+< }
+<
+<
+< /**
+<  * Compter les enfants d'un objet
+<  *
+<  * @pipeline objets_compte_enfants
+<  * @param  array $flux Données du pipeline
+<  * @return array       Données du pipeline
+< **/
+< function cita_objet_compte_enfants($flux) {
+< 	if ($flux['args']['objet'] == 'auteur' and $id_auteur = intval($flux['args']['id_objet'])) {
+< 		// juste les publiés ?
+< 		if (array_key_exists('statut', $flux['args']) and ($flux['args']['statut'] == 'publie')) {
+< 			$flux['data']['citas'] = sql_countsel('spip_citas', 'id_auteur= ' . intval($id_auteur) . " AND (statut = 'publie')");
+< 		} else {
+< 			$flux['data']['citas'] = sql_countsel('spip_citas', 'id_auteur= ' . intval($id_auteur) . " AND (statut <> 'poubelle')");
+< 		}
+< 	}
+<
+< 	return $flux;
+< }
+diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/formulaires/editer_cita.html ../plugins/fabrique_auto/cita/formulaires/editer_cita.html
+14,17d13
 < 			[(#SAISIE{auteurs, id_auteur, obligatoire=oui,
 < 				label=<:auteur:titre_auteur:>})]
 <
+<
+21,22c17,18
+< 			[(#SAISIE{auteurs, id_auteur,
+< 				label=<:cita:champ_id_auteur_label:>})]
+---
+> 			[(#SAISIE{auteurs, id_preneur,
+> 				label=<:cita:champ_id_preneur_label:>})]
+32a29,31
+>
+> 			[(#SAISIE{auteurs, id_donneur, obligatoire=oui,
+> 				label=<:cita:champ_id_donneur_label:>})]
+diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/formulaires/editer_cita.php ../plugins/fabrique_auto/cita/formulaires/editer_cita.php
+25,26d24
+<  * @param int $id_auteur
+<  *     Identifiant de l'objet parent (si connu)
+43c41
+< function formulaires_editer_cita_identifier_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+---
+> function formulaires_editer_cita_identifier_dist($id_cita = 'new', $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+56,57d53
+<  * @param int $id_auteur
+<  *     Identifiant de l'objet parent (si connu)
+74,78c70,71
+< function formulaires_editer_cita_charger_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+< 	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, $id_auteur, $lier_trad, $retour, $config_fonc, $row, $hidden);
+< 	if (!$valeurs['id_auteur']) {
+< 		$valeurs['id_auteur'] = $id_auteur;
+< 	}
+---
+> function formulaires_editer_cita_charger_dist($id_cita = 'new', $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+> 	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
+91,92d83
+<  * @param int $id_auteur
+<  *     Identifiant de l'objet parent (si connu)
+109c100
+< function formulaires_editer_cita_verifier_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+---
+> function formulaires_editer_cita_verifier_dist($id_cita = 'new', $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+112c103
+< 	$erreurs = formulaires_editer_objet_verifier('cita', $id_cita, array('date_debut', 'date_fin', 'id_auteur'));
+---
+> 	$erreurs = formulaires_editer_objet_verifier('cita', $id_cita, array('date_debut', 'date_fin', 'id_donneur'));
+126,127d116
+<  * @param int $id_auteur
+<  *     Identifiant de l'objet parent (si connu)
+144,145c133,134
+< function formulaires_editer_cita_traiter_dist($id_cita = 'new', $id_auteur = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+< 	$retours = formulaires_editer_objet_traiter('cita', $id_cita, $id_auteur, $lier_trad, $retour, $config_fonc, $row, $hidden);
+---
+> function formulaires_editer_cita_traiter_dist($id_cita = 'new', $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+> 	$retours = formulaires_editer_objet_traiter('cita', $id_cita, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
+diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/lang/cita_fr.php ../plugins/fabrique_auto/cita/lang/cita_fr.php
+19c19,20
+< 	'champ_id_auteur_label' => 'Auteur',
+---
+> 	'champ_id_donneur_label' => 'Donneur',
+> 	'champ_id_preneur_label' => 'Preneur',
 diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/paquet.xml ../plugins/fabrique_auto/cita/paquet.xml
+6c6
+< 	compatibilite="[3.2.7;3.2.*]"
+---
+> 	compatibilite="[3.2.7;3.3.*]"
 12c12
-< 		Paquet généré le 2020-04-21 14:57:07
+< 		Paquet généré le 2020-04-22 10:10:51
 ---
-> 		Paquet généré le 2020-04-22 10:10:51
+> 		Paquet généré le 2020-04-23 07:50:09
+50,52d49
+< 	<pipeline nom="affiche_enfants" inclure="cita_pipelines.php" />
+< 	<pipeline nom="boite_infos" inclure="cita_pipelines.php" />
+< 	<pipeline nom="objet_compte_enfants" inclure="cita_pipelines.php" />
+diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/prive/objets/contenu/cita.html ../plugins/fabrique_auto/cita/prive/objets/contenu/cita.html
+12,14c12,14
+< [<div class="champ contenu_id_auteur[ (#ID_AUTEUR*|strlen|?{'',vide})]">
+< 	<label><:cita:champ_id_auteur_label:> : </label>
+< 	<span dir="#LANG_DIR" class="#EDIT{id_auteur} id_auteur">(#ID_AUTEUR)</span>
+---
+> [<div class="champ contenu_id_preneur[ (#ID_PRENEUR*|strlen|?{'',vide})]">
+> 	<label><:cita:champ_id_preneur_label:> : </label>
+> 	<span dir="#LANG_DIR" class="#EDIT{id_preneur} id_preneur">(#ID_PRENEUR)</span>
+29a30,34
+> </div>]
+>
+> [<div class="champ contenu_id_donneur[ (#ID_DONNEUR*|strlen|?{'',vide})]">
+> 	<label><:cita:champ_id_donneur_label:> : </label>
+> 	<span dir="#LANG_DIR" class="#EDIT{id_donneur} id_donneur">(#ID_DONNEUR)</span>
 diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/prive/objets/liste/citas.html ../plugins/fabrique_auto/cita/prive/objets/liste/citas.html
-2c2
-< 	nom,1,
----
-> 	date_debut,1,
-15c15
-< 			<th class="nom" scope="col">[(#TRI{nom,<:cita:champ_nom_label:>,ajax})]</th>
----
-> 			<th class="date_debut" scope="col">[(#TRI{date_debut,<:cita:champ_date_debut_label:>,ajax})]</th>
 21c21
-< 	<BOUCLE_liste_citas(CITAS){id_auteur?}{id_auteur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num nom},#GET{defaut_tri}}{par nom}{pagination #ENV{nb,10}}>
+< 	<BOUCLE_liste_citas(CITAS){id_auteur?}{id_auteur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num date_debut},#GET{defaut_tri}}{par date_debut}{pagination #ENV{nb,10}}>
 ---
-> 	<BOUCLE_liste_citas(CITAS){id_auteur?}{id_auteur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num date_debut},#GET{defaut_tri}}{par date_debut}{pagination #ENV{nb,10}}>
-25c25
-< 			<td class="nom principale">[(#LOGO_CITA|image_reduire{20,26})]<a href="[(#ID_CITA|generer_url_entite{cita})]" title="<:info_numero_abbreviation|attribut_html:> #ID_CITA">[(#RANG). ]#NOM</a></td>
----
-> 			<td class="date_debut principale">[(#LOGO_CITA|image_reduire{20,26})]<a href="[(#ID_CITA|generer_url_entite{cita})]" title="<:info_numero_abbreviation|attribut_html:> #ID_CITA">[(#RANG). ]#DATE_DEBUT</a></td>
-diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/prive/objets/liste/citas_associer.html ../plugins/fabrique_auto/cita/prive/objets/liste/citas_associer.html
-2c2
-< 	multi nom,1,
----
-> 	multi date_debut,1,
-13c13
-< #SET{afficher_lettres,#TRI|=={'multi nom'}|oui}
----
-> #SET{afficher_lettres,#TRI|=={'multi date_debut'}|oui}
-28,29c28,29
-< 			{tri #ENV{par,multi nom},#GET{defaut_tri}}{id_cita==#GET{afficher_lettres}|?{'.*','A'}}>[
-< 		(#NOM**|extraire_multi|initiale|unique|oui)
----
-> 			{tri #ENV{par,multi date_debut},#GET{defaut_tri}}{id_cita==#GET{afficher_lettres}|?{'.*','A'}}>[
-> 		(#DATE_DEBUT**|extraire_multi|initiale|unique|oui)
-31c31
-< 		#SELF|parametre_url{debutcita,@#ID_CITA}|ancre_url{paginationcita}|afficher_initiale{#NOM**|extraire_multi|initiale{},#COMPTEUR_BOUCLE,#GET{debut},#ENV{nb,10}}
----
-> 		#SELF|parametre_url{debutcita,@#ID_CITA}|ancre_url{paginationcita}|afficher_initiale{#DATE_DEBUT**|extraire_multi|initiale{},#COMPTEUR_BOUCLE,#GET{debut},#ENV{nb,10}}
-43c43
-< 			<th class="nom" scope="col">[(#TRI{multi nom,<:cita:champ_nom_label:>,ajax})]</th>
----
-> 			<th class="date_debut" scope="col">[(#TRI{multi date_debut,<:cita:champ_date_debut_label:>,ajax})]</th>
-49,50c49,50
-< 		{tri #ENV{par,multi nom},#GET{defaut_tri}}{pagination #ENV{nb,10} cita}>
-< 		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})][ (#EXPOSE|unique)][ (#NOM**|extraire_multi|initiale|=={#ENV{i}}|?{on}|unique)]">
----
-> 		{tri #ENV{par,multi date_debut},#GET{defaut_tri}}{pagination #ENV{nb,10} cita}>
-> 		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})][ (#EXPOSE|unique)][ (#DATE_DEBUT**|extraire_multi|initiale|=={#ENV{i}}|?{on}|unique)]">
-52c52
-< 			<td class="nom">[(#LOGO_CITA|image_reduire{20,20})]<a href="[(#ID_CITA|generer_url_entite{cita})]">#NOM</a></td>
----
-> 			<td class="date_debut">[(#LOGO_CITA|image_reduire{20,20})]<a href="[(#ID_CITA|generer_url_entite{cita})]">#DATE_DEBUT</a></td>
-diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/prive/objets/liste/citas_lies.html ../plugins/fabrique_auto/cita/prive/objets/liste/citas_lies.html
-2c2
-< 	multi nom,1,
----
-> 	multi date_debut,1,
-13c13
-< #SET{afficher_lettres,#TRI|=={'multi nom'}|oui}
----
-> #SET{afficher_lettres,#TRI|=={'multi date_debut'}|oui}
-21,22c21,22
-< 			{tri #ENV{par,multi nom},#GET{defaut_tri}}{id_cita==#GET{afficher_lettres}|?{'.*','A'}}>[
-< 		(#NOM**|extraire_multi|initiale|unique|oui)
----
-> 			{tri #ENV{par,multi date_debut},#GET{defaut_tri}}{id_cita==#GET{afficher_lettres}|?{'.*','A'}}>[
-> 		(#DATE_DEBUT**|extraire_multi|initiale|unique|oui)
-24c24
-< 		#SELF|parametre_url{debutcitl,@#ID_CITA}|ancre_url{paginationcitl}|afficher_initiale{#NOM**|extraire_multi|initiale{},#COMPTEUR_BOUCLE,#GET{debut},#ENV{nb,10}}
----
-> 		#SELF|parametre_url{debutcitl,@#ID_CITA}|ancre_url{paginationcitl}|afficher_initiale{#DATE_DEBUT**|extraire_multi|initiale{},#COMPTEUR_BOUCLE,#GET{debut},#ENV{nb,10}}
-36c36
-< 			<th class="nom" scope="col">[(#TRI{multi nom,<:cita:champ_nom_label:>,ajax})]</th>
----
-> 			<th class="date_debut" scope="col">[(#TRI{multi date_debut,<:cita:champ_date_debut_label:>,ajax})]</th>
-42,43c42,43
-< 		{tri #ENV{par,multi nom},#GET{defaut_tri}}{pagination #ENV{nb,10} citl}>
-< 		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})][ (#EXPOSE|unique)][ (#NOM**|extraire_multi|initiale|=={#ENV{i}}|?{on}|unique)][(#ID_CITA|=={#ENV{id_lien_ajoute}}|oui)append]">
----
-> 		{tri #ENV{par,multi date_debut},#GET{defaut_tri}}{pagination #ENV{nb,10} citl}>
-> 		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})][ (#EXPOSE|unique)][ (#DATE_DEBUT**|extraire_multi|initiale|=={#ENV{i}}|?{on}|unique)][(#ID_CITA|=={#ENV{id_lien_ajoute}}|oui)append]">
-45c45
-< 			<td class="nom">[(#LOGO_CITA|image_reduire{20,20})]<a href="[(#ID_CITA|generer_url_entite{cita})]">#NOM</a></td>
----
-> 			<td class="date_debut">[(#LOGO_CITA|image_reduire{20,20})]<a href="[(#ID_CITA|generer_url_entite{cita})]">#DATE_DEBUT</a></td>
+> 	<BOUCLE_liste_citas(CITAS){id_preneur?}{id_donneur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num date_debut},#GET{defaut_tri}}{par date_debut}{pagination #ENV{nb,10}}>
+Only in ../plugins/fabrique_auto/.backup/cita/prive/objets/liste: objets_lies_cita.html
 diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/prive/squelettes/contenu/cita.html ../plugins/fabrique_auto/cita/prive/squelettes/contenu/cita.html
-15c15
-< 	<h1>[(#RANG). ](#NOM|sinon{<:info_sans_titre:>})[(#CHEMIN_IMAGE{cita-24.png}|balise_img{cita,cadre-icone})]</h1>
----
-> 	<h1>[(#RANG). ](#DATE_DEBUT|sinon{<:info_sans_titre:>})[(#CHEMIN_IMAGE{cita-24.png}|balise_img{cita,cadre-icone})]</h1>
+40,51d39
+< <div class="nettoyeur"></div>
+< <div class="liste">
+< 	<BOUCLE_objetslies(spip_citas_liens){id_cita}{0,1}><h3><:cita:titre_objets_lies_cita:></h3></BOUCLE_objetslies>
+<
+< 	<BOUCLE_listeobjets(spip_citas_liens){id_cita}{fusion objet}{par objet}>
+< 		#SET{table,#OBJET|table_objet}
+< 		[(#SET{titre,[#OBJET:info_(#GET{table})_liees_cita]})]
+< 		[(#SET{liste,#VAL{prive/objets/liste/#GET{table}}|trouver_fond|?{#GET{table},objets_lies_cita}})]
+< 		<INCLURE{fond=prive/objets/liste/#GET{liste},objet,id_cita,ajax,env} />
+< 	</BOUCLE_listeobjets>
+< </div>
+<
 diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/prive/squelettes/contenu/cita_edit.html ../plugins/fabrique_auto/cita/prive/squelettes/contenu/cita_edit.html
-22c22
-< 		<h1>(#ENV{titre,#INFO_NOM{cita,#ID_CITA}|sinon{<:info_sans_titre:>}})</h1>
+3c3
+< 	[(#SET{id_parent,#INFO_ID_AUTEUR{cita,#ID_CITA}})]
 ---
-> 		<h1>(#ENV{titre,#INFO_DATE_DEBUT{cita,#ID_CITA}|sinon{<:info_sans_titre:>}})</h1>
-diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/prive/squelettes/hierarchie/cita.html ../plugins/fabrique_auto/cita/prive/squelettes/hierarchie/cita.html
-5c5
-< &gt; <strong class="on">#NOM</strong>
+> 	[(#SET{id_parent,#INFO_{cita,#ID_CITA}})]
+5a6
+>
+7,8c8
+< 	#SET{id_parent,#ENV{id_auteur,#ENV{id_parent}}}
+< 	[(#GET{id_parent}|non|ou{[(#AUTORISER{creercitadans, auteur, #GET{id_parent}})]}|sinon_interdire_acces)]
 ---
-> &gt; <strong class="on">#DATE_DEBUT</strong>
-Binary files ../plugins/fabrique_auto/.backup/cita/prive/themes/spip/images/cita-12.png and ../plugins/fabrique_auto/cita/prive/themes/spip/images/cita-12.png differ
-Binary files ../plugins/fabrique_auto/.backup/cita/prive/themes/spip/images/cita-128.png and ../plugins/fabrique_auto/cita/prive/themes/spip/images/cita-128.png differ
-Binary files ../plugins/fabrique_auto/.backup/cita/prive/themes/spip/images/cita-16.png and ../plugins/fabrique_auto/cita/prive/themes/spip/images/cita-16.png differ
-Binary files ../plugins/fabrique_auto/.backup/cita/prive/themes/spip/images/cita-24.png and ../plugins/fabrique_auto/cita/prive/themes/spip/images/cita-24.png differ
-Binary files ../plugins/fabrique_auto/.backup/cita/prive/themes/spip/images/cita-32.png and ../plugins/fabrique_auto/cita/prive/themes/spip/images/cita-32.png differ
-Binary files ../plugins/fabrique_auto/.backup/cita/prive/themes/spip/images/cita-64.png and ../plugins/fabrique_auto/cita/prive/themes/spip/images/cita-64.png differ
-Binary files ../plugins/fabrique_auto/.backup/cita/prive/themes/spip/images/cita-new-16.png and ../plugins/fabrique_auto/cita/prive/themes/spip/images/cita-new-16.png differ
+> 	[(#AUTORISER{creer,cita}|sinon_interdire_acces)]
+11c11
+< #SET{redirect,#ENV{redirect}|sinon{#ID_CITA|?{#ID_CITA|generer_url_entite{cita},#GET{id_parent}|?{#GET{id_parent}|generer_url_entite{auteur},#URL_ECRIRE{auteurs}}}}}
+---
+> #SET{redirect,#ENV{redirect}|sinon{#ID_CITA|?{#ID_CITA|generer_url_entite{cita},#URL_ECRIRE{citas}}}}
+31c31
+< 		[(#FORMULAIRE_EDITER_CITA{#ENV{id_cita,oui}, #GET{id_parent}, #GET{redirect}, #ENV{associer_objet}})]
+---
+> 		[(#FORMULAIRE_EDITER_CITA{#ENV{id_cita,oui}, #GET{redirect}, #ENV{associer_objet}})]
+Only in ../plugins/fabrique_auto/.backup/cita/prive/squelettes: hierarchie
 diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/saisies/citas.html ../plugins/fabrique_auto/cita/saisies/citas.html
 7c7
-< 	<BOUCLE_citas(CITAS){id_cita?}{id_auteur?}{id_auteur?}{statut?}{recherche?}{tout}{par num nom, nom}>
+< 	<BOUCLE_citas(CITAS){id_cita?}{id_auteur?}{id_auteur?}{statut?}{recherche?}{tout}{par num date_debut, date_debut}>
 ---
-> 	<BOUCLE_citas(CITAS){id_cita?}{id_auteur?}{id_auteur?}{statut?}{recherche?}{tout}{par num date_debut, date_debut}>
-9c9
-< 		<option value="#ID_CITA"[(#ID_CITA|in_array{#ENV{valeur_forcee,#GET{valeur,#ENV{defaut,#ARRAY}}}}|oui) selected="selected"]>#NOM</option>]
----
-> 		<option value="#ID_CITA"[(#ID_CITA|in_array{#ENV{valeur_forcee,#GET{valeur,#ENV{defaut,#ARRAY}}}}|oui) selected="selected"]>#DATE_DEBUT</option>]
-11c11
-< 		<option value="#ID_CITA"[(#ID_CITA|=={#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}}|oui) selected="selected"]>#NOM</option>]
----
-> 		<option value="#ID_CITA"[(#ID_CITA|=={#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}}|oui) selected="selected"]>#DATE_DEBUT</option>]
-diff -r -x . -x .. -x fabrique_diff.diff -x fabrique_cita.php ../plugins/fabrique_auto/.backup/cita/saisies-vues/citas.html ../plugins/fabrique_auto/cita/saisies-vues/citas.html
-6,7c6,7
-< 		{par num nom, nom}{statut?}{tout}>
-< 		<li class="choix">#NOM (#ID_CITA)</li>
----
-> 		{par num date_debut, date_debut}{statut?}{tout}>
-> 		<li class="choix">#DATE_DEBUT (#ID_CITA)</li>
-15,16c15,16
-< 		{par num nom, nom}{statut?}{tout}>
-< 	  	<p>#NOM (#ID_CITA)</p>
----
-> 		{par num date_debut, date_debut}{statut?}{tout}>
-> 	  	<p>#DATE_DEBUT (#ID_CITA)</p>
+> 	<BOUCLE_citas(CITAS){id_cita?}{id_preneur?}{id_donneur?}{statut?}{recherche?}{tout}{par num date_debut, date_debut}>

@@ -18,7 +18,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	<BOUCLE_liste_citas(CITAS){id_auteur?}{id_auteur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num date_debut},#GET{defaut_tri}}{par date_debut}{pagination #ENV{nb,10}}>
+	<BOUCLE_liste_citas(CITAS){id_preneur?}{id_donneur?}{id_mot?}{id_auteur?}{where?}{statut?}{recherche?}{tri #ENV{par,num date_debut},#GET{defaut_tri}}{par date_debut}{pagination #ENV{nb,10}}>
 		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
 			<td class="picto">[(#CHEMIN_IMAGE{cita-16.png}|balise_img)]</td>
 			<td class="statut">[(#STATUT|puce_statut{cita,#ID_CITA})]</td> 
