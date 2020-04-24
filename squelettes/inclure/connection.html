@@ -10,6 +10,5 @@
 
 	<strong class="explication"><:cita:explication_login{lien=#GET{lien}}:></strong>
 </div>
-[
-	(#FORMULAIRE_INSCRIPTION{6forum,'', [(#SELF|parametre_url{hash,#VAR{}|time})]})
-]
+
+#FORMULAIRE_INSCRIPTION{6forum, '', #ENV{retour}}

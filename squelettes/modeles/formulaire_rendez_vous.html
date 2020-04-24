@@ -1,22 +1,10 @@
-#CACHE{0}
-#ENV{id_auteur]
-#SET{identification_obligatoire, #CONFIG{cita/identification_preneur_obligatoire}}
 
-[(#ENV{id_auteur}|non)
-	<INCLURE{fond=inclure/connection,env,id_auteur} />
-	[(#GET{identification_obligatoire}|oui)
-	#SET{access,non}
-	]
-]
-
-[(#GET{access}|=={oui}|oui)
-	<div class="ajax">
-		#FORMULAIRE_EDITER_CITA{
-			oui,
-			#ENV{id_donneur},
-			#ENV{id_preneur},
-			#ENV{retour},
-			#ENV{options,#ARRAY}
-		}
+<div class="ajax">
+	#FORMULAIRE_EDITER_CITA{
+		oui,
+		#ENV{id_donneur},
+		#ENV{id_preneur},
+		#ENV{retour},
+		#ENV{options,#ARRAY}
+	}
 </div>
-]

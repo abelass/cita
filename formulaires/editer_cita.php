@@ -108,12 +108,14 @@ function formulaires_editer_cita_charger_dist(
 	$valeurs = formulaires_editer_objet_charger('cita', $id_cita, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
 
 	$valeurs['id_auteur'] = isset($visiteur_session['id_auteur']) ? $visiteur_session['id_auteur'] : '';
+
 	$espace_prive = $valeurs['espace_prive'] = test_espace_prive();
 
 	// Ajouter les options aux valeurs.
 	foreach ($options AS $cle => $valeur) {
 		$valeurs[$cle] = $valeur;
 	}
+
 
 	// Les configs
 	foreach ($config AS $cle => $valeur) {
@@ -125,6 +127,11 @@ function formulaires_editer_cita_charger_dist(
 				(isset($options[$cle]) AND !$options[$cle]))) {
 			$valeurs[$cle] = $valeur;
 		}
+	}
+
+
+	if ($identification_preneur_obligatoire AND !$valeurs['id_auteur']) {
+		$valeurs['editable'] = false;
 	}
 
 	if (!intval($id_cita)) {

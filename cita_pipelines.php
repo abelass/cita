@@ -104,3 +104,31 @@ function cita_optimiser_base_disparus($flux) {
 
 	return $flux;
 }
+
+
+/**
+ * Redirection si authetifié pòureviter un problème de cache.
+ *
+ * @pipeline formulaire_traiter
+ * @param array $flux
+ * @return array
+ */
+function cita_formulaire_traiter($flux){
+
+	if (
+		$flux['args']['form'] == 'inscription'
+		and $id_auteur = intval($flux['data']['id_auteur'])
+		and $statut = sql_getfetsel('statut', 'spip_auteurs', 'id_auteur = '.$id_auteur)
+	){
+
+		if (isset($flux['args']['args'][2]) AND  $statut !='nouveau') {
+			$timestamp = time();
+			$redirect = urldecode($flux['args']['args'][2]);
+			spip_log($redirect, 'teste');
+			include_spip('inc/headers');
+			redirige_par_entete($redirect);
+		}
+	}
+
+	return $flux;
+}
