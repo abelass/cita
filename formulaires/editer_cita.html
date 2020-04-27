@@ -1,12 +1,18 @@
 <div class='formulaire_spip formulaire_editer formulaire_#FORM formulaire_#FORM-#ENV{id_cita,nouveau}'>
 	[(#ENV{id_auteur}|non)
-		#INCLURE{fond=inclure/connection,env,id_auteur,retour=#SELF}
+		#INCLURE{fond=formulaires/inc-editer_cita_connection,env,id_auteur,retour=#SELF}
 	]
+	#ENV{date_debut}
+
+	[(#ENV{espace_prive}|non|et{#DATE_DEBUT|=={0000-00-00 00:00:00}|oui}|oui)
+		<INCLURE{fond=formulaires/inc-editer_cita_calendrier, env} />
+	]
+
 
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
 
-	[(#ENV{editable})
+	[(#ENV{editable}|et{#DATE_DEBUT|=={0000-00-00 00:00:00}|non})
 	<form method="post" action="#ENV{action}"><div>
 		#ACTION_FORMULAIRE{#ENV{action}}
 		<input type="hidden" name="id_cita" value="#ENV{id_cita}" />

@@ -1,10 +1,10 @@
+<div>
 
-<div class="ajax">
 	#FORMULAIRE_EDITER_CITA{
 		oui,
 		#ENV{id_donneur},
 		#ENV{id_preneur},
 		#ENV{retour},
-		#ENV{options,#ARRAY}
+		#ENV{options,#ARRAY{affichage_calendrier,#ENV{affichage_calendrier}}}
 	}
 </div>

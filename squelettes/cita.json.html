@@ -12,7 +12,7 @@
 		#SET{date_fin,#DATE_FIN}
 	})]
 	#SET{tableau,#ARRAY{id,#ID_EVENEMENT,
-		title,(#TITRE|html2unicode|unicode2charset),
+		title, <:cita:plus_disponible:> ,
 		allDay, true,
 		start,#DATE_DEBUT,
 		end,#GET{date_fin},

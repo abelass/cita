@@ -142,6 +142,7 @@ function formulaires_editer_cita_charger_dist(
 	}
 
 	$valeurs['dates_editables'] = true;
+
 	if (!$espace_prive) {
 		if (!$dates_editables) {
 			$valeurs['dates_editables'] = false;

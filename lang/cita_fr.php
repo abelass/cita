@@ -28,7 +28,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'donneur_choix_webmaster' => 'un webmestre',
 
 	// E
-	'explication_identification_preneur_obligatoire'  => 'Le site doit être ouvert à l\'inscription (Configuration/Interactivité/Visiteurs)',
+	'explication_identification_preneur_obligatoire'  => 'Le site doit être ouvert à l\'inscription (Configuration/Interactivité/Visiteurs).<br> Il est recommandé d\'installer le plugin Inscription 3.',
 	'explication_inscription'  => 'Sinon @lien@.',
 	'explication_login'  => '@lien@ si vous êtes déjà enregistré sur ce site.',
 

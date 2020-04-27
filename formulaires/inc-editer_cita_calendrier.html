@@ -19,6 +19,7 @@
 jQuery(function($) {
 	$('#agenda').fullCalendar({
 			locale: '[(#LANG|strtolower)]',
+			selectable: true,
 			editable: false,
 			navLinks: true,
 			eventLimit: true,
@@ -30,6 +31,27 @@ jQuery(function($) {
 				right: [(#LANG_DIR|=={ltr}|?{"'agendaDay,agendaWeek,month'","'today nextYear,next,prev,prevYear'"})]
 				},
 			fixedWeekCount: false,
+			dayClick: function(date, jsEvent, view) {
+				console.log(date.format());
+				// Click sur un mois bascule sur
+				if (view.name == 'month') {
+						$('#agenda').fullCalendar('changeView', 'agendaDay', date);
+				}
+			},
+			select: function( start, end, jsEvent, view) {
+				if(view.name == 'agendaDay' || view.name == 'agendaWeek') {
+					var dateDebut = start.format('DD-MM-YYYY HH:mm:ss');
+					var dateFin = end.format('DD-MM-YYYY HH:mm:s');
+					ajaxReload('formulaire_rendez_vous', {
+							args:{
+								date_debut: dateDebut,
+								date_fin: dateFin,
+								retour: '#SELF',
+								affichage_calendrier: ''
+							},
+						});
+				}
+			},
 			eventRender: function( event, element, view ) {
 				var title = element.find('.fc-title, .fc-list-item-title');
 				title.html(title.text());
