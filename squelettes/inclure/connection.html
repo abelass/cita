@@ -1,14 +1,38 @@
 <div class="login">
 	#SET{url,#URL_PAGE{login}|parametre_url{url,#SELF}}
 	[(#SET{lien,#GET{url}|lien_ou_expose{
-		<:objets_location:connectez_vous:>,
+		<:cita:titre_connectez_vous:>,
 		'',
-		login_modal,
+		modal,
 		<:lien_connecter:>,
 		nofollow,
 	}})]
 
 	<strong class="explication"><:cita:explication_login{lien=#GET{lien}}:></strong>
 </div>
+<div class="inscription">
+	#SET{url,#URL_PAGE{inscription}|parametre_url{retour,#SELF}}
+	[(#SET{lien,#GET{url}|lien_ou_expose{
+		<:cita:titre_inscrivez_vous:>,
+		'',
+		modal,
+		<:lien_connecter:>,
+		nofollow,
+	}})]
 
-#FORMULAIRE_INSCRIPTION{6forum, '', #ENV{retour}}
+	<strong class="explication"><:cita:explication_inscription{lien=#GET{lien}}:></strong>
+
+	#FORMULAIRE_INSCRIPTION{6forum, '', #SELF}
+</div>
+
+
+<script>
+	$(function() {
+		$('.modal').on('click', function (){
+			$.modalboxload(
+				$(this).attr('href') + '&var_zajax=content'
+				);
+			return false;
+		});
+	});
+</script>

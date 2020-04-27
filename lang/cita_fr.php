@@ -29,6 +29,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// E
 	'explication_identification_preneur_obligatoire'  => 'Le site doit être ouvert à l\'inscription (Configuration/Interactivité/Visiteurs)',
+	'explication_inscription'  => 'Sinon @lien@.',
 	'explication_login'  => '@lien@ si vous êtes déjà enregistré sur ce site.',
 
 	// F
@@ -76,8 +77,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'titre_cita' => 'Rendez-vous',
 	'titre_citas' => 'Rendez-vous',
 	'titre_citas_rubrique' => 'Rendez-vous de la rubrique',
+	'titre_connectez_vous' => 'Connectez-vous',
+	'titre_inscription' => 'Inscription',
+	'titre_inscrivez_vous' => 'inscrivez-vous',
 	'titre_langue_cita' => 'Langue de ce rendez-vous',
 	'titre_logo_cita' => 'Logo de ce rendez-vous',
 	'titre_objets_lies_cita' => 'Liés à ce rendez-vous',
 	'titre_page_configurer_cita' => 'Paramètres pour cita',
+	'titre_prendre_rendez_vous' => 'Prendre rendez-vous'
 );

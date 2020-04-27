@@ -49,7 +49,11 @@
 	</script>
 ]
 
-[(#ENV{espace_prive}|non)
+[(#REM) ]
+[(#ENV{espace_prive}
+	|non
+	|et{#ENV{identification_preneur_obligatoire}|non}
+	|et{#ENV{id_auteur}|non})
 	<INCLURE{fond=formulaires/inc-editer_cita_personnes_donnees,env} />
 ]
 

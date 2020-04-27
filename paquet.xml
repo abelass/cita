@@ -47,8 +47,7 @@
 	<necessite nom="dates_outils" compatibilite="[1.1.0;]" />
 	<necessite nom="verifier" compatibilite="[1.9.6;]" />
 
-	<utilise nom="inscriptionmotdepasse" compatibilite="[1.1.0;]" />
-	<utilise nom="inscriptionconnexion" compatibilite="[1.1.1;]" />
+	<utilise nom="inscription3" compatibilite="[3.6.14;]" />
 
 	<pipeline nom="autoriser" inclure="cita_autorisations.php" />
 
@@ -58,7 +57,7 @@
 	<pipeline nom="boite_infos" inclure="cita_pipelines.php" />
 	<pipeline nom="objet_compte_enfants" inclure="cita_pipelines.php" />
 	<pipeline nom="optimiser_base_disparus" inclure="cita_pipelines.php" />
-	<pipeline nom="formulaire_traiter" inclure="cita_pipelines.php" />
+	<pipeline nom="i3_traiter_formulaire" inclure="cita_pipelines.php" />
 
 	<menu nom="citas" titre="cita:titre_citas" parent="menu_edition" icone="images/cita-16.png" action="citas" />
 
