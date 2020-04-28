@@ -5,7 +5,6 @@
 	[(#ENV{espace_prive}|non|et{#ENV{affichage_calendrier}|=={oui}|oui}|oui)
 		<INCLURE{fond=formulaires/inc-editer_cita_calendrier, env} />
 	]
-[(#ENV{erreurs}|serialize)]
 
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
