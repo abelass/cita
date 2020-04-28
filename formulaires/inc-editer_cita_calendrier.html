@@ -68,6 +68,7 @@ jQuery(function($) {
 				}
 			},
 			eventRender: function( event, element, view ) {
+				element.find(".fc-time").remove();
 				var title = element.find('.fc-title, .fc-list-item-title');
 				title.html(title.text());
 			},

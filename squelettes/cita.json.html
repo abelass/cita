@@ -4,15 +4,16 @@
 #HTTP_HEADER{Content-type:application/json;charset=#CHARSET}
 [<BOUCLE_citas(CITAS){', '}{par date_debut}
 {agendafull date_debut,date_fin, periode,
-	#VAL{Y}|date{#GET{start}}, #VAL{m}|date{#GET{start}},     #VAL{d}|date{#GET{start}},
+	#VAL{Y}|date{#GET{start}}, #VAL{m}|date{#GET{start}}, #VAL{d}|date{#GET{start}},
 	#VAL{Y}|date{#GET{end}}, #VAL{m}|date{#GET{end}}, #VAL{d}|date{#GET{end}}}
 	>
 	[(#HORAIRE|=={non}|?{
 		#SET{date_fin,#DATE_FIN|full_calendar_jplusun},
 		#SET{date_fin,#DATE_FIN}
 	})]
-	#SET{tableau,#ARRAY{id,#ID_EVENEMENT,
-		title, <:cita:plus_disponible:> ,
+
+	#SET{tableau,#ARRAY{id,#ID_CITA,
+		title, -  ,
 		allDay, true,
 		start,#DATE_DEBUT,
 		end,#GET{date_fin},
