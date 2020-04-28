@@ -1,5 +1,6 @@
 #SET{views,#ENV{calendar_views,#CONFIG{cita/calendar_views,#ARRAY{month,agendaWeek,agendaDay}}}}
 #SET{calendar_views_default,#ENV{calendar_views_default,#CONFIG{cita/calendar_views_default,agendaWeek}}}
+#SET{calendar_slot_duration,#ENV{dates_periode,#CONFIG{cita/dates_periode,30}}}
 #SET{firstDay,#ENV{firstDay,#CONFIG{cita/jour1,1}}}
 #SET{dow,#ENV{dow,#CONFIG{cita/days_week,#LISTE{1, 2, 3, 4}}}}
 #SET{start,#ENV{start,#CONFIG{cita/start_time,10:00}}}
@@ -35,6 +36,17 @@ jQuery(function($) {
 				right: [(#LANG_DIR|=={ltr}|?{['(#GET{views}|array_reverse|implode{','})'],"'today nextYear,next,prev,prevYear'"})]
 				},
 			fixedWeekCount: false,
+			businessHours: [(#GET{businessHours}|json_encode)],
+			selectConstraint: 'businessHours',
+			selectOverlap: false,
+			views: {
+				agendaWeek: {
+					slotDuration : '[(#GET{calendar_slot_duration}):00]'
+				},
+				agendaday: {
+					slotDuration : '[(#GET{calendar_slot_duration}):00]'
+				}
+			},
 			dayClick: function(date, jsEvent, view) {
 				// Click sur un mois bascule sur
 				if (view.name == 'month') {
@@ -63,9 +75,7 @@ jQuery(function($) {
 			loading: function(bool) {
 				if (bool) $('#calendrier-loading').show();
 				else $('#calendrier-loading').hide();
-			},
-			businessHours: [(#GET{businessHours}|json_encode)],
-			selectConstraint: 'businessHours'
+			}
 	})
 });
 /*]]>*/</script>

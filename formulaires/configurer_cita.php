@@ -120,6 +120,7 @@ function formulaires_configurer_cita_saisies_dist() {
 							'options' => [
 								'nom' => 'dates_periode',
 								'label' => _T('cita:label_dates_periode'),
+								'type' => 'time',
 								'defaut' => $config['dates_periode'],
 								'afficher_si' => '@dates_periode_definition@ == "predefinis"',
 							]
