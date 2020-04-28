@@ -137,17 +137,33 @@ function formulaires_editer_cita_charger_dist(
 	if (!intval($id_cita)) {
 		$valeurs['statut'] = isset($config['statut_defaut']) ? $config['statut_defaut'] : 'prepa';
 		$valeurs['_hidden'] .= '<input type="hidden" name="statut" value="' . $valeurs['statut'] . '" />';
-		$valeurs['date_debut'] = _request('date_debut') ? _request('date_debut') : '0000-00-00 00:00:00';
-		$valeurs['date_fin'] = _request('date_fin') ? _request('date_fin') : '0000-00-00 00:00:00';
+
+		$date_complete_debut = strtotime(_request('date_debut') ? _request('date_debut') : '0000-00-00 00:00:00');
+		$date_complete_fin = strtotime(_request('date_fin') ? _request('date_fin') : '0000-00-00 00:00:00');
+		$date_debut = date('d/m/Y', $date_complete_debut);
+		$heure_debut= date('H:i', $date_complete_debut);
+		$date_fin = date('d/m/Y', $date_complete_fin);
+		$heure_fin= date('H:i', $date_complete_fin);
+		$valeurs['date_debut'] = [
+			'date' => $date_debut,
+			'heure' => $heure_debut
+		];
+		$valeurs['date_fin'] = [
+			'date' => $date_fin,
+			'heure' => $heure_fin
+		];
 	}
 
 	$valeurs['dates_editables'] = true;
+	$valeurs['affichage_calendrier'] = _request('affichage_calendrier') ? _request('affichage_calendrier') : 'oui';
 
 	if (!$espace_prive) {
 		if (!$dates_editables) {
 			$valeurs['dates_editables'] = false;
-			$valeurs['_hidden'] .= '<input type="hidden" name="date_debut" value="' . $valeurs['date_debut'] . '" />';
-			$valeurs['_hidden'] .= '<input type="hidden" name="date_fin" value="' . $valeurs['date_fin'] . '" />';
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_debut[date]" value="' . $valeurs['date_debut']['date'] . '" />';
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_debut[heure]" value="' . $valeurs['date_debut']['heure'] . '" />';
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_fin[date]" value="' . $valeurs['date_fin']['date'] . '" />';
+			$valeurs['_hidden'] .= '<input type="hidden" name="date_fin[heure]" value="' . $valeurs['date_fin']['heure'] . '" />';
 		}
 	}
 
@@ -184,7 +200,6 @@ function formulaires_editer_cita_charger_dist(
 	if (!$espace_prive) {
 		$valeurs['_hidden'] .= '<input type="hidden" name="id_preneur" value="' . $id_preneur . '" />';
 	}
-
 
 
 	return $valeurs;
@@ -252,6 +267,9 @@ function formulaires_editer_cita_verifier_dist(
 		}
 	}
 
+	if (count($erreurs) > 0) {
+		set_request('affichage_calendrier', 'non');
+	}
 
 	return $erreurs;
 }

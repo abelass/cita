@@ -2,17 +2,15 @@
 	[(#ENV{id_auteur}|non)
 		#INCLURE{fond=formulaires/inc-editer_cita_connection,env,id_auteur,retour=#SELF}
 	]
-	#ENV{date_debut}
-
-	[(#ENV{espace_prive}|non|et{#DATE_DEBUT|=={0000-00-00 00:00:00}|oui}|oui)
+	[(#ENV{espace_prive}|non|et{#ENV{affichage_calendrier}|=={oui}|oui}|oui)
 		<INCLURE{fond=formulaires/inc-editer_cita_calendrier, env} />
 	]
-
+[(#ENV{erreurs}|serialize)]
 
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
 
-	[(#ENV{editable}|et{#DATE_DEBUT|=={0000-00-00 00:00:00}|non})
+	[(#ENV{editable}|et{#ENV{affichage_calendrier}|=={oui}|non})
 	<form method="post" action="#ENV{action}"><div>
 		#ACTION_FORMULAIRE{#ENV{action}}
 		<input type="hidden" name="id_cita" value="#ENV{id_cita}" />
