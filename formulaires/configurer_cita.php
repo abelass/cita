@@ -27,6 +27,12 @@ function formulaires_configurer_cita_saisies_dist() {
 		'administrateur' => _T('cita:donneur_choix_administrateur'),
 	];
 
+	$calendar_views = [
+		'month' => _T('organiseur:cal_par_mois'),
+		'agendaWeek' => _T('organiseur:cal_par_semaine'),
+		'agendaDay' => _T('organiseur:cal_par_jour'),
+	];
+
 	return [
 		[
 			'saisie' => 'fieldset',
@@ -138,6 +144,25 @@ function formulaires_configurer_cita_saisies_dist() {
 				'label' => _T('cita:fieldset_label_calendrier')
 			],
 			'saisies' => [
+				[
+					'saisie' => 'checkbox',
+					'options' => [
+						'nom' => 'calendar_views',
+						'data' => $calendar_views,
+						'label' => _T('cita:calendar_views'),
+						'defaut' => $config['calendar_views']
+					]
+				],
+				[
+					'saisie' => 'selection',
+					'options' => [
+						'nom' => 'calendar_views_default',
+						'data' => $calendar_views,
+						'cacher_option_intro' => 'on',
+						'label' => _T('cita:calendar_views_default'),
+						'defaut' => $config['calendar_views_default']
+					]
+				],
 				[
 					'saisie' => 'selection',
 					'options' => [
